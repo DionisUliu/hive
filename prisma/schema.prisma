@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Building {
+  id        String    @id @default(cuid())
+  name      String
+  history   History[]
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+}
+
+model Room {
+  id          String     @id @default(cuid())
+  name        String
+  type        RoomType
+  capacity    Int
+  price       Float
+  isAvailable Boolean
+  contracts   Contract[]
+  history     History[]
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
+}
+
+model Resident {
+  id               String    @id @default(cuid())
+  firstName        String    @map("first_name")
+  lastName         String    @map("last_name")
+  email            String    @unique
+  password         String
+  verificationCode String    @map("verification_code")
+  gender           String
+  role             Role
+  contract         Contract?
+  history          History[]
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+}
+
+model Contract {
+  id         String   @id @default(cuid())
+  name       String
+  amount     Float
+  startDate  String   @map("start_date")
+  endDate    String   @map("end_date")
+  isPaid     Boolean  @map("is_paid")
+  residentId String   @unique @map("resident_id")
+  resident   Resident @relation(fields: [residentId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  roomId     String   @map("room_id")
+  Room       Room     @relation(fields: [roomId], references: [id])
+
+  @@index([roomId])
+}
+
+model History {
+  id         String   @id @default(cuid())
+  active     Boolean
+  residentId String
+  roomId     String
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  buildingId String   @map("building_id")
+  Building   Building @relation(fields: [buildingId], references: [id])
+  Room       Room     @relation(fields: [roomId], references: [id])
+  Resident   Resident @relation(fields: [residentId], references: [id])
+
+  @@index([roomId])
+  @@index([residentId])
+  @@index([buildingId])
+}
+
+enum Role {
+  ADMIN
+  RESIDENT
+}
+
+enum RoomType {
+  SINGLE_ROOM
+  SINGLE_ROOM_FOR_TWO
+  ONE_BEDROOM_APARTMENT
+  TWO_BEDROOM_APARTMENT
+}

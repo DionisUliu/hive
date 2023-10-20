@@ -1,0 +1,86 @@
+/* Center the form vertically and horizontally */
+.mainFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0;
+  background-image: url('https://img.freepik.com/free-vector/white-abstract-background_23-2148808256.jpg?size=626&ext=jpg&ga=GA1.1.1060167680.1689885670&semt=ais');
+}
+
+.mainFormContainerAdmin {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* Style the form container */
+.formContainer {
+  background-color: #fff;
+  width: 100%;
+  max-width: 450px; /* Adjust the maximum width as needed */
+  padding-inline: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 2px solid;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+.icon {
+  font-size: 2rem;
+}
+
+/* Style form items as needed */
+.buttonSection {
+  margin-bottom: 16px;
+  padding-top: 20px;
+}
+
+.error {
+  color: #ff4c70;
+  margin-bottom: -1rem;
+}
+
+.splitScreen {
+  display: flex;
+  height: 100%;
+}
+
+.leftPane {
+  flex: 0.3;
+
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.rightPane {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: 100%; /* Full width for smaller screens */
+  }
+  .mainFormContainer {
+    padding: 1rem;
+  }
+  .splitScreen {
+    flex-direction: column;
+  }
+
+  .leftPane,
+  .rightPane {
+    width: 100%;
+  }
+}
