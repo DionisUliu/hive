@@ -45,7 +45,9 @@ const Residents = () => {
           ) : (
             <>
               <h1 className={styles.title}>Residents</h1>
-              <ResidentsActions refetch={refetch} />
+              <div style={{ marginTop: 10, marginBottom: 10 }}>
+                <ResidentsActions refetch={refetch} />
+              </div>
               <ResidentsTable residentData={residentData} refetch={refetch} />
             </>
           )}

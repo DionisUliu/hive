@@ -21,9 +21,9 @@ export async function createResident(body: any) {
   }
 }
 
-export async function updateResident(body: any) {
+export async function updateResident(body: any, residentId: string) {
   try {
-    const response = await fetch(`${endpoints.RESIDENTS}`, {
+    const response = await fetch(`${endpoints.RESIDENTS}/${residentId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -37,6 +37,16 @@ export async function updateResident(body: any) {
     }
 
     return await response.json();
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteResident(residentId: string) {
+  try {
+    await fetch(`${endpoints.RESIDENTS}/${residentId}`, {
+      method: 'DELETE',
+    });
   } catch (error: any) {
     throw new Error(error.message);
   }

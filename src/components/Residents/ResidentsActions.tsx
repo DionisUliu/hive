@@ -5,18 +5,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createResidentsSchema } from '@/constants/validationSchema';
 import colors from '@/constants/colors';
-import { createResident } from '@/lib/api/residents';
-import { AiFillEdit } from 'react-icons/ai';
+import { createResident, updateResident } from '@/lib/api/residents';
+import { AiFillEdit, AiOutlinePlusCircle } from 'react-icons/ai';
 
 const { TextArea } = Input;
 
-const ResidentsActions = ({
-  record,
-  sources,
-  refetch,
-  sourcesLoading,
-}: any) => {
-  const sentenceId = record?.id;
+const ResidentsActions = ({ record, refetch }: any) => {
+  const residentId = record?.id;
 
   const {
     handleSubmit,
@@ -44,7 +39,7 @@ const ResidentsActions = ({
   const onSubmit = async (data: any) => {
     toggleModal();
     setLoading(true);
-    if (!record) {
+    if (!residentId) {
       try {
         const body: any = {
           firstName: data?.firstName,
@@ -70,9 +65,9 @@ const ResidentsActions = ({
           gender: data?.gender,
           phoneNumber: data?.phoneNumber,
         };
-        await createResident(body);
+        await updateResident(body, residentId);
         refetch();
-        notification.success({ message: 'Sentence created successfully' });
+        notification.success({ message: 'Sentence updated successfully' });
       } catch (error: any) {
         notification.error({ message: 'Unsuccessful, try again!' });
       } finally {
@@ -83,16 +78,25 @@ const ResidentsActions = ({
 
   return (
     <div>
-      <Button
-        icon={<AiFillEdit style={{ marginBottom: -2 }} />}
-        size="small"
-        type="primary"
-        onClick={toggleModal}
-      >
-        {'Add resident'}{' '}
-      </Button>
+      {!residentId ? (
+        <Button
+          icon={<AiOutlinePlusCircle style={{ marginBottom: -2 }} />}
+          size="small"
+          type="primary"
+          onClick={toggleModal}
+        >
+          {'Add resident'}{' '}
+        </Button>
+      ) : (
+        <Button
+          icon={<AiFillEdit style={{ marginBottom: -2 }} />}
+          size="small"
+          type="primary"
+          onClick={toggleModal}
+        />
+      )}
       <Modal
-        title={'Add resident'}
+        title={residentId ? 'Update resident' : 'Add resident'}
         width={500}
         centered={true}
         okButtonProps={{
