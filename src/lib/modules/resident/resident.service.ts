@@ -15,14 +15,9 @@ export const createResident = async (data: ICreateResidentBody) => {
   if (foundResident)
     throw new UnprocessableEntity(errors.RESIDENT.UNPROCESSABLE_ENTITY);
 
-  const salt = await bcrypt.genSalt();
-  const password = await bcrypt.hash(data.password, salt);
-
   const verificationCode = generateKey();
 
-  const body: Prisma.ResidentCreateInput | Prisma.ResidentUncheckedCreateInput =
-    { ...data, password, verificationCode };
-  return await dal.createResident(body);
+  return await dal.createResident(data);
 };
 
 export const getResidents = async () => {

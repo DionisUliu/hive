@@ -7,6 +7,7 @@ import errors from '@/config/errors';
 import * as dal from './contract.dal';
 import * as roomDal from '../room/room.dal';
 import * as residentDal from '../resident/resident.dal';
+import { Prisma } from '@prisma/client';
 
 export const createContract = async (data: ICreateContractBody) => {
   // validation
@@ -47,7 +48,41 @@ export const getContract = async (id: string) => {
   const contract = await dal.getContractById(id);
 
   if (!contract) {
-    throw new NotFound(errors.RESIDENT.NOT_FOUND);
+    throw new NotFound(errors.CONTRACT.NOT_FOUND);
+  }
+  if (contract.deletedAt) {
+    throw new NotFound(errors.CONTRACT.DELETED_CONTRACT);
   }
   return contract;
+};
+
+export const deleteContract = async (id: string) => {
+  const deletedAt = new Date();
+  const contract = await dal.updateContractById(id, { deletedAt });
+
+  if (!contract) {
+    throw new NotFound(errors.CONTRACT.NOT_FOUND);
+  }
+  return contract;
+};
+
+export const getContracts = async (
+  roomId: string | null,
+  residentId: string | null,
+) => {
+  const query: Prisma.ContractWhereInput = {};
+
+  if (roomId) {
+    const room = await roomDal.getRoomById(roomId);
+    if (!room) throw new NotFound(errors.CONTRACT.NOT_FOUND);
+    query.roomId = roomId;
+  }
+
+  if (residentId) {
+    const resident = await residentDal.getResidentById(residentId);
+    if (!resident) throw new NotFound(errors.CONTRACT.NOT_FOUND);
+    query.residentId = residentId;
+  }
+  const contracts = await dal.getContracts(query);
+  return contracts;
 };
