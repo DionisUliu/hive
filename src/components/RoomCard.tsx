@@ -13,7 +13,11 @@ interface Props {
   residentNumber: number;
   imageUrl: string;
   roomName: string;
+  setRoomId: React.Dispatch<SetStateAction<string | undefined>>;
+  setRoomName: React.Dispatch<SetStateAction<string | undefined>>;
+  setResidentLimit: React.Dispatch<SetStateAction<number | undefined>>;
   setOpenDrawer: React.Dispatch<SetStateAction<boolean>>;
+  roomId: string;
 }
 
 const RoomCard: React.FC<Props> = ({
@@ -22,55 +26,66 @@ const RoomCard: React.FC<Props> = ({
   residentNumber,
   imageUrl,
   roomName,
+  setRoomId,
+  setRoomName,
+  setResidentLimit,
   setOpenDrawer,
+  roomId,
 }) => {
-
   return (
-    <div className={isReserved 
-      ? styles.card_container_reserved
-      : styles.card_container_available
-      }>
-      <div className={isReserved
-      ? styles.card_status_container_reserved
-      : styles.card_status_container_available
-      }>
-        {
+    <div
+      className={
+        isReserved
+          ? styles.card_container_reserved
+          : styles.card_container_available
+      }
+    >
+      <div
+        className={
           isReserved
-          ? (
-            <>
-              <TbHotelService />
-              <p>Reserved</p> 
-            </>
-          )
-          : (
-            <>
-            <MdEventAvailable />
-            <p>Available</p></>
-          )
-        }        
-      </div>
-      <div className={styles.body_container} onClick={() => {
-        if(!isReserved){
-          setOpenDrawer(true);
+            ? styles.card_status_container_reserved
+            : styles.card_status_container_available
         }
-      }}>
-        <img 
-          src={imageUrl} 
-          className={styles.room_image} 
-        />
+      >
+        {isReserved ? (
+          <>
+            <TbHotelService />
+            <p>Reserved</p>
+          </>
+        ) : (
+          <>
+            <MdEventAvailable />
+            <p>Available</p>
+          </>
+        )}
+      </div>
+      <div
+        className={styles.body_container}
+        onClick={() => {
+          if (!isReserved) {
+            setOpenDrawer(true);
+            setRoomId(roomId);
+            setResidentLimit(residentNumber);
+            setRoomName(roomName);
+          }
+        }}
+      >
+        <img src={imageUrl} className={styles.room_image} />
         <div className={styles.info_container}>
           <h3 className={styles.room_number}>{roomName}</h3>
           <div className={styles.info_flex}>
-            <Tag color="green" className={styles.rooms_available}>{roomTypes[roomType]}</Tag>
+            <Tag color="green" className={styles.rooms_available}>
+              {roomTypes[roomType]}
+            </Tag>
             <div className={styles.residents_info}>
-              <CiUser /> 
+              <CiUser />
               <p>{`Capacity (${residentNumber})`}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default RoomCard;

@@ -7,6 +7,7 @@ export const createContract = async (
   const contract = await prisma.contract.create({
     data,
   });
+
   return contract;
 };
 

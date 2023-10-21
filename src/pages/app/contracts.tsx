@@ -4,10 +4,18 @@ import { useSession } from 'next-auth/react';
 import { ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
 import styles from '../../styles/buildings.module.css';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
+import ContractTable from '@/components/Contract/ContractTable';
 
 const Contracts = () => {
   const session = useSession();
-  const loading = false;
+
+  const {
+    data: contractData,
+    loading,
+    refetch,
+  } = useGetApi<any[]>(`${endpoints.CONTRACTS}`);
 
   return (
     <ProtectedRoute>
@@ -35,6 +43,7 @@ const Contracts = () => {
           ) : (
             <>
               <h1 className={styles.title}>Contracts</h1>
+              <ContractTable refetch={refetch} contractData={contractData} />
             </>
           )}
         </ConfigProvider>

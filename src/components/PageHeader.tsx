@@ -172,7 +172,7 @@ const PageHeader = ({ children }: any) => {
               </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              Made with <div role="img">❤</div> by ByteBond©
+              Made with <span role="img">❤</span> by ByteBond©
               {`${dayjs().year()}`}
             </Footer>
           </Layout>
