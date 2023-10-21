@@ -66,10 +66,10 @@ const PageHeader = ({ children }: any) => {
               alignItems: 'center',
             }}
           >
-            <span className={styles.title}>
+            <div className={styles.title}>
               <BiHive className={styles.icon} />
               <h1>{` Hive`}</h1>
-            </span>
+            </div>
             <div style={{ display: 'flex', gap: 50 }}>
               <Dropdown
                 menu={{ items }}

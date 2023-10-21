@@ -100,13 +100,6 @@ const Signin = () => {
                 >
                   <Button
                     type="link"
-                    onClick={() => router.push('/signup')}
-                    href="/signup"
-                  >
-                    {'Do not have an account?'}
-                  </Button>
-                  <Button
-                    type="link"
                     onClick={() => setShowEmailVerification(true)}
                   >
                     {'Forget password?'}

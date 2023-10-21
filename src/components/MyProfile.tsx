@@ -9,18 +9,6 @@ import dayjs from 'dayjs';
 const MyProfile = (data: any) => {
   const user: IUser = data?.data;
 
-  const { data: levels, loading: levelsLoading } = useGetApi<any>(
-    `${endpoints.LEVELS}`,
-  );
-  const currentLevel = levels?.currentLevel;
-  const nextLevel = levels?.nextLevel;
-  const percentageToNextLevel = levels?.percentageToNextLevel;
-
-  const twoColors = {
-    '0%': colors.GREEN,
-    '100%': colors.PRIMARY,
-  };
-
   const items: DescriptionsProps['items'] = [
     {
       label: 'First name',

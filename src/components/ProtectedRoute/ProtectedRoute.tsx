@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const ProtectedRoute = ({ item }: any) => {
+const ProtectedRoute = ({ children }: any) => {
   const { status } = useSession();
   const router = useRouter();
 
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ item }: any) => {
     }
   }, [status, router]);
 
-  return status ? item : null;
+  return status ? children : null;
 };
 
 export default ProtectedRoute;
