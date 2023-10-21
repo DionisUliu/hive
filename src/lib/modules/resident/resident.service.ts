@@ -38,14 +38,6 @@ export const updateResident = async (id: string, data: IUpdateResidentBody) => {
   if (!resident) {
     throw new NotFound(errors.RESIDENT.NOT_FOUND);
   }
-  const updateBody: IUpdateResidentBody = { ...data };
-
-  if (data?.password) {
-    const salt = await bcrypt.genSalt();
-    const password = await bcrypt.hash(data.password, salt);
-
-    updateBody.password = password;
-  }
 
   const updatedResident = await dal.updateResidentById(id, data);
   return updatedResident;

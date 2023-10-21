@@ -66,20 +66,20 @@ export const getRegistration = async (id: string) => {
   return registration;
 };
 
-// export const updateRegistration = async (
-//   id: string,
-//   data: IUpdateRegisterBody,
-// ) => {
-//   const registration = await dal.getRegistrationById(id);
-//   if (!registration) {
-//     throw new NotFound(errors.REGISTER.NOT_FOUND);
-//   }
-//   const updateBody: IUpdateRegisterBody = { ...data };
+export const updateRegistration = async (
+  id: string,
+  data: IUpdateRegisterBody,
+) => {
+  const registration = await dal.getRegistrationById(id);
+  if (!registration) {
+    throw new NotFound(errors.REGISTER.NOT_FOUND);
+  }
+  const updateBody: IUpdateRegisterBody = { ...data };
 
-//   if (data?.roomId) {
-//     updateBody.buildingId = buildingId;
-//   }
+  if (data?.roomId) {
+    const room = await roomDal.getRoomById(data.roomId);
+  }
 
-//   const updatedResident = await dal.updateRegistrationById(id, updateBody);
-//   return updatedResident;
-// };
+  const updatedResident = await dal.updateRegistrationById(id, updateBody);
+  return updatedResident;
+};

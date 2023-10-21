@@ -10,10 +10,9 @@ export const createResident = async (
 ) => {
   await getServerSession(req, res, authOptions(req, res));
 
-  console.log('1');
-  // const data = JSON.parse(req?.body);
+  const data = JSON.parse(req?.body);
 
-  const residents = await service.createResident(req?.body);
+  const residents = await service.createResident(data);
   return res.json(residents);
 };
 
@@ -34,9 +33,9 @@ export const updateResident = async (
   await getServerSession(req, res, authOptions(req, res));
 
   const id: string = String(req.query?.id);
-  const body = JSON.parse(req.body);
+  // const body = JSON.parse(req.body);
 
-  const residents = await service.updateResident(id, body);
+  const residents = await service.updateResident(id, req.body);
   return res.json(residents);
 };
 
@@ -45,10 +44,10 @@ export const getResident = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const body = JSON.parse(req.body);
+  // const body = JSON.parse(req.body);
   const id: string = String(req.query?.id);
 
-  const residents = await service.updateResident(id, body);
+  const residents = await service.updateResident(id, req.body);
   return res.json(residents);
 };
 
