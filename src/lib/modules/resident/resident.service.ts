@@ -8,13 +8,11 @@ import {
 import { NotFound, UnprocessableEntity } from '@/lib/utilities/error';
 import errors from '@/config/errors';
 import * as dal from './resident.dal';
-import { generateKey } from '@/lib/utilities/generals';
 
 export const createResident = async (data: ICreateResidentBody) => {
   const foundResident = await dal.getResident({ email: data.email });
   if (foundResident)
     throw new UnprocessableEntity(errors.RESIDENT.UNPROCESSABLE_ENTITY);
-  console.log('foudnUser', foundResident);
 
   return await dal.createResident(data);
 };

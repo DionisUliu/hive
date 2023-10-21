@@ -7,6 +7,7 @@ import errors from '@/config/errors';
 import * as dal from './contract.dal';
 import * as roomDal from '../room/room.dal';
 import * as residentDal from '../resident/resident.dal';
+import * as registerDal from '../register/register.dal';
 import { Prisma } from '@prisma/client';
 
 export const createContract = async (data: ICreateContractBody) => {
@@ -22,7 +23,14 @@ export const createContract = async (data: ICreateContractBody) => {
   const resident = await residentDal.getResidentById(data.residentId);
   if (!resident) throw new NotFound(errors.RESIDENT.NOT_FOUND);
 
-  return await dal.createContract(data);
+  const createdContract = await dal.createContract(data);
+  await registerDal.createRegistration({
+    roomId: data.roomId,
+    residentId: data.residentId,
+    contractId: createdContract.id,
+  });
+
+  return createdContract;
 };
 
 export const updateContract = async (id: string, data: IUpdateContractBody) => {
@@ -57,12 +65,26 @@ export const getContract = async (id: string) => {
 };
 
 export const deleteContract = async (id: string) => {
+  const foundContract = await dal.getContractById(id);
+  if (!foundContract) throw new NotFound(errors.CONTRACT.NOT_FOUND);
+
   const deletedAt = new Date();
   const contract = await dal.updateContractById(id, { deletedAt });
 
-  if (!contract) {
-    throw new NotFound(errors.CONTRACT.NOT_FOUND);
-  }
+  const registration = await registerDal.getRegistration({
+    contractId: foundContract.id,
+  });
+
+  if (registration?.residentId)
+    await residentDal.updateResidentById(registration?.residentId, {
+      contract: undefined,
+    });
+
+  if (registration?.id)
+    await registerDal.updateRegistrationById(registration?.id, {
+      active: false,
+    });
+
   return contract;
 };
 
