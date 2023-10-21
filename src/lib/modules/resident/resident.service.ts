@@ -14,8 +14,7 @@ export const createResident = async (data: ICreateResidentBody) => {
   const foundResident = await dal.getResident({ email: data.email });
   if (foundResident)
     throw new UnprocessableEntity(errors.RESIDENT.UNPROCESSABLE_ENTITY);
-
-  const verificationCode = generateKey();
+  console.log('foudnUser', foundResident);
 
   return await dal.createResident(data);
 };

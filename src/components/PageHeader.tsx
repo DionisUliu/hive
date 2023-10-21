@@ -7,24 +7,18 @@ import {
   Menu,
   MenuProps,
 } from 'antd';
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { BiHive, BiUser } from 'react-icons/bi';
 import colors from '@/constants/colors';
-import {
-  signOut,
-  useSession,
-} from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { BsBuildings } from 'react-icons/bs';
 import { HiOutlineUserGroup } from 'react-icons/hi';
-
 import styles from '../styles/pageHeader.module.css';
+import useGetApi from '@/lib/hooks/useGetApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -32,27 +26,19 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 const PageHeader = ({ children }: any) => {
   const session = useSession();
-
   const gender = session?.data?.user?.gender;
-  const userRole = session?.data?.user?.role;
   const userName = session?.data?.user?.name;
-  const tokens = session?.data?.user?.tokens;
-  const level = session?.data?.user?.level;
   const urlMale = 'https://cdn-icons-png.flaticon.com/128/4140/4140048.png';
   const urlFemale = 'https://cdn-icons-png.flaticon.com/128/4140/4140040.png';
-
   const [activeMenuItem, setActiveMenuItem] = useState<string>('building');
-
   const router = useRouter();
-
   const currentRoute = router.asPath.split('/')[2];
 
   useEffect(() => {
-    if(activeMenuItem !== currentRoute){
+    if (activeMenuItem !== currentRoute) {
       setActiveMenuItem(currentRoute);
     }
   }, [activeMenuItem, currentRoute]);
-  
 
   const handleSignOut = () => {
     signOut({ redirect: false }).then(() => {
@@ -85,15 +71,27 @@ const PageHeader = ({ children }: any) => {
       type,
       label,
     } as MenuItem;
-  }
+  };
 
   const menuItems = [
-    getItem('buildings', 'Buildings', <BsBuildings className={styles.icon_size_menu} />),
-    getItem('residents', 'Residents', <HiOutlineUserGroup className={styles.icon_size_menu} />),
-    getItem('contracts', 'Contracts',<LiaFileContractSolid className={styles.icon_size_menu} />),
-    getItem('profile', 'Profile',<BiUser className={styles.icon_size_menu} />),
-  ]
-  
+    getItem(
+      'buildings',
+      'Buildings',
+      <BsBuildings className={styles.icon_size_menu} />,
+    ),
+    getItem(
+      'residents',
+      'Residents',
+      <HiOutlineUserGroup className={styles.icon_size_menu} />,
+    ),
+    getItem(
+      'contracts',
+      'Contracts',
+      <LiaFileContractSolid className={styles.icon_size_menu} />,
+    ),
+    getItem('profile', 'Profile', <BiUser className={styles.icon_size_menu} />),
+  ];
+
   return (
     <ConfigProvider
       theme={{
@@ -104,24 +102,23 @@ const PageHeader = ({ children }: any) => {
         },
       }}
     >
-      <Layout style={{ height: '100%', minHeight: '100vh', overflow: 'hidden' }}>
-        <Sider 
-          collapsed
-          className={styles.menu_sider}
-        >
+      <Layout
+        style={{ height: '100%', minHeight: '100vh', overflow: 'hidden' }}
+      >
+        <Sider collapsed className={styles.menu_sider}>
           <div className={styles.title}>
             <BiHive className={styles.icon} />
-            <h1>{` Hive`}</h1>
+            <h1>{`Hive`}</h1>
           </div>
-          <Divider className={styles.divider}/>
-          <Menu 
-            theme='dark'
+          <Divider className={styles.divider} />
+          <Menu
+            theme="dark"
             className={styles.menu_side_wrapper}
             mode="inline"
             items={menuItems}
             onClick={(item) => {
-              router.push(item.key)
-              setActiveMenuItem(item.key)
+              router.push(item.key);
+              setActiveMenuItem(item.key);
             }}
             defaultSelectedKeys={['building']}
             selectedKeys={[activeMenuItem]}
@@ -136,7 +133,13 @@ const PageHeader = ({ children }: any) => {
                 alignItems: 'center',
               }}
             >
-              <div style={{ display: 'flex', gap: 50 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                }}
+              >
                 <Dropdown
                   menu={{ items }}
                   placement="bottomRight"
@@ -169,7 +172,7 @@ const PageHeader = ({ children }: any) => {
               </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              Made with <span role="img">❤</span> by ByteBond©
+              Made with <div role="img">❤</div> by ByteBond©
               {`${dayjs().year()}`}
             </Footer>
           </Layout>

@@ -72,8 +72,16 @@ export const createSourceSchema = yup.object().shape({
   frequency: yup.number().min(1).max(10),
 });
 
-export const createSentenceSchema = yup.object().shape({
-  sentence: yup.string().required('Sentence is required!'),
-  sourceId: yup.string().required('Source is required!'),
-  frequency: yup.number().min(1).max(10),
+export const createResidentsSchema = yup.object().shape({
+  firstName: yup.string().required('First name is required!'),
+  lastName: yup.string().required('Last name is required!'),
+  email: yup
+    .string()
+    .email('Invalid email address!')
+    .test('allowed-domains', 'Email domain not allowed', (value) =>
+      value ? allowedEmailDomains.includes(value.split('@')[1]) : true,
+    )
+    .required('Email is required!'),
+  gender: yup.string().required('Gender is required!'),
+  phoneNumber: yup.string().required('Phone number is required!'),
 });

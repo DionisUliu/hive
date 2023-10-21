@@ -10,9 +10,7 @@ export const createResident = async (
 ) => {
   await getServerSession(req, res, authOptions(req, res));
 
-  const data = JSON.parse(req?.body);
-
-  const residents = await service.createResident(data);
+  const residents = await service.createResident(req.body);
   return res.json(residents);
 };
 
