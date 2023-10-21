@@ -104,7 +104,7 @@ const PageHeader = ({ children }: any) => {
         },
       }}
     >
-      <Layout style={{ height: '100%', minHeight: '100vh' }}>
+      <Layout style={{ height: '100%', minHeight: '100vh', overflow: 'hidden' }}>
         <Sider 
           collapsed
           className={styles.menu_sider}
@@ -155,7 +155,7 @@ const PageHeader = ({ children }: any) => {
             </div>
           </Header>
           <Layout>
-            <Content style={{ margin: '24px 16px 0' }}>
+            <Content className={styles.content}>
               <div
                 style={{
                   padding: 24,

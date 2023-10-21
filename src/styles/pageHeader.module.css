@@ -89,6 +89,12 @@
   padding-top: 6px !important;
 }
 
+.content{
+  height: 75vh;
+  margin: 24px 16px 0;
+  overflow: scroll;
+}
+
 @media (max-width: 768px) {
   .menu {
     display: none;
