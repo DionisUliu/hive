@@ -1,4 +1,4 @@
-.rooms_container{
+.rooms_container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
@@ -6,15 +6,65 @@
 }
 
 @media (max-width: 1100px) {
-  .rooms_container{
+  .rooms_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .rooms_container{
+  .rooms_container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.buildings_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cards_icon {
+  font-size: 20px;
+  margin-bottom: -3px;
+  margin-right: 10px;
+}
+
+.progress_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buildingCards {
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+  color: white;
+}
+.card {
+  width: 100%;
+  height: 70%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  align-items: end;
+  background: #f7ee8f;
+  background: linear-gradient(0deg, #fbf4a4, #cffeed);
+  -webkit-animation: AnimationName 19s ease infinite;
+  -moz-animation: AnimationName 19s ease infinite;
+  animation: AnimationName 19s ease infinite;
+}
+
+.card_image {
+  width: 70%;
+  height: auto;
+}
+.card_title {
+  font-size: 2.5rem;
+}
+.card_subtitle {
+  font-size: 1rem;
 }

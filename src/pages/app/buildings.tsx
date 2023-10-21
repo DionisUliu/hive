@@ -8,10 +8,11 @@ import RoomsFilter from '@/components/RoomsFilter';
 
 import roomsMock from '../../mock/roomsMock.json';
 import styles from '../../styles/buildings.module.css';
+import BuildingsStats from '@/components/Buildings/BuildingsStats';
+import BuildingsCards from '@/components/Buildings/BuildingsCards';
 
 const Buildings = () => {
   const session = useSession();
-  const userId = session?.data?.user?.id;
   const loading = false;
 
   // const { data, loading } = useGetApi<any[]>(`${endpoints.USERS}${userId}`);
@@ -42,20 +43,8 @@ const Buildings = () => {
           ) : (
             <>
               <h1 className={styles.title}>Buildings</h1>
-              <RoomsFilter />
-              <div className={styles.rooms_container}>
-                {
-                  roomsMock.map((room) => (
-                  <RoomCard 
-                    key={room.id} 
-                    roomType={room.type}
-                    isReserved={room.isReserved}
-                    residentNumber={room.residents_num}
-                    area={room.area}
-                  />
-                  ))
-                }
-              </div>
+              <BuildingsStats />
+              <BuildingsCards />
             </>
           )}
         </ConfigProvider>
