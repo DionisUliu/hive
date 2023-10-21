@@ -13,6 +13,7 @@ export const createRegistration = async (
 export const getRegistrations = async (query?: Prisma.RegisterWhereInput) => {
   const registrations = await prisma.register.findMany({
     where: query,
+    include: { Building: true, Room: true, Resident: true },
   });
   return registrations;
 };
@@ -20,6 +21,7 @@ export const getRegistrations = async (query?: Prisma.RegisterWhereInput) => {
 export const getRegistration = async (query: Prisma.RegisterWhereInput) => {
   const registration = await prisma.register.findFirst({
     where: query,
+    include: { Building: true, Room: true, Resident: true },
   });
   return registration;
 };
@@ -29,6 +31,7 @@ export const getRegistrationById = async (id: string) => {
     where: {
       id,
     },
+    include: { Building: true, Room: true, Resident: true },
   });
   return registration;
 };

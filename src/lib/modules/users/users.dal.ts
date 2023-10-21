@@ -16,7 +16,7 @@ export const findUser = async (query: Prisma.UserWhereInput) => {
 export const getAllUsers = async (query?: IUser) => {
   const users = await prisma.user.findMany({
     where: query,
-    orderBy: [{ createdAt: 'desc' }],
+    orderBy: { createdAt: 'desc' },
   });
   return users;
 };
