@@ -2,7 +2,7 @@ const generateFloors = () => {
   const floors = [];
 
   // Define the desired number of floors (in this case, 10)
-  const NUMBER_OF_FLOORS = 10;
+  const NUMBER_OF_FLOORS = 9;
   
   // Loop to add objects until the array reaches the desired number of floors
   for (let i = 1; i <= NUMBER_OF_FLOORS; i++) {

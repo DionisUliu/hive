@@ -32,30 +32,31 @@ const data = [
   },
 ];
 
-const BuildingsCards = () => {
+interface Props {
+  buildings: any[];
+}
+
+const BuildingsCards:React.FC<Props> = ({buildings}) => {
 
   const router = useRouter();
-  console.log(router);
   
-
   return (
     <div>
       <Row gutter={16}>
-        {data.map((item, index) => (
+        {(buildings || [])?.map((item, index) => (
           <Col xs={24} sm={12} md={6} lg={8} key={index} 
             onClick={() => {
               router.push({
                 pathname:"roomsList", 
                 query: {
-                buildingName: item.title,
-                buildingId: item.id,
+                buildingName: item.name,
               }})
             }}
           >
             <div className={styles.card}>
               <h4 className={styles.card_subtitle}>{item.subtitle}</h4>
-              <h2 className={styles.card_title}>{item.title}</h2>
-              <img className={styles.card_image} alt="test" src={item.url} />
+              <h2 className={styles.card_title}>{`Building ${item.name}`}</h2>
+              <img className={styles.card_image} alt="test" src="/building2.svg" />
             </div>
           </Col>
         ))}

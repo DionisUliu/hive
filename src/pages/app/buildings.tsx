@@ -5,15 +5,15 @@ import { ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
 import BuildingsStats from '@/components/Buildings/BuildingsStats';
 import BuildingsCards from '@/components/Buildings/BuildingsCards';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
 
-import roomsMock from '../../mock/roomsMock.json';
 import styles from '../../styles/buildings.module.css';
 
 const Buildings = () => {
   const session = useSession();
-  const loading = false;
 
-  // const { data, loading } = useGetApi<any[]>(`${endpoints.USERS}${userId}`);
+  const { data, loading } = useGetApi<any[]>(endpoints.BUILDINGS);
 
   return (
     <ProtectedRoute>
@@ -42,7 +42,9 @@ const Buildings = () => {
             <>
               <h1 className={styles.title}>Buildings</h1>
               <BuildingsStats />
-              <BuildingsCards />
+              <BuildingsCards 
+                buildings={data}
+              />
             </>
           )}
         </ConfigProvider>

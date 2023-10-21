@@ -3,4 +3,7 @@ export default {
   SEND_RESET_PASSWORD_LINK: '/api/reset-password/send',
   VALIDATE_RESET_PASSWORD_LINK: '/api/reset-password/validate-link',
   RESET_PASSWORD: '/api/reset-password',
-};
+  BUILDINGS: '/api/buildings',
+  ROOMS: '/api/rooms',
+  ROOM: '/api/rooms/'
+} as const;

@@ -1,19 +1,43 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import colors from '@/constants/colors';
-import { ConfigProvider, Spin } from 'antd';
+import {
+  ConfigProvider,
+  Drawer,
+  Spin,
+} from 'antd';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import RoomsFilter from '@/components/RoomsFilter';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
+import RoomCard from '@/components/RoomCard';
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import styles from '../../styles/roomsList.module.css';
 
 const RoomsList = () => {
   const session = useSession();
-  const loading = false;
   const router = useRouter();
 
-  const { buildingName, buildingId } = router.query;
+  const { data, loading } = useGetApi<any[]>(endpoints.ROOMS);
+
+  const { buildingName } = router.query;
+
+  const roomsPerBuilding = useMemo(() => data?.filter((item) => item.name.charAt(0) === buildingName) || [], [buildingName, data]);
+
+  const [rooms, setRooms] = useState<any[]>();
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if(!rooms && roomsPerBuilding.length > 0){
+      setRooms(roomsPerBuilding)
+    }
+  },[rooms, roomsPerBuilding]);
   
   return (
     <ProtectedRoute>
@@ -41,7 +65,34 @@ const RoomsList = () => {
           ) : (
             <div className={styles.rooms_container}>
               <h2>{`Building ${buildingName}`}</h2>
-              <RoomsFilter />
+              <RoomsFilter
+                allRooms={roomsPerBuilding}
+                setRooms={setRooms}
+              />
+              <div className={styles.rooms_list_container}>
+                {rooms?.map((room) => (
+                 <RoomCard
+                  key={room.id}
+                  roomType={room.type}
+                  isReserved={!room.isAvailable}
+                  residentNumber={room.capacity}
+                  imageUrl={room.preview}
+                  roomName={room.name}
+                  setOpenDrawer={setOpenDrawer}
+                 />
+                 ) )}
+              </div>
+              <Drawer 
+                title="" 
+                placement="right" 
+                onClose={() => setOpenDrawer(false)} 
+                open={openDrawer}
+                size="large"
+              >
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+              </Drawer>
             </div>
           )}
         </ConfigProvider>
