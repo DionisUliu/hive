@@ -1,8 +1,8 @@
 import endpoints from '@/constants/endpoints';
 
-export async function createResident(body: any) {
+export async function createContract(body: any) {
   try {
-    const response = await fetch(`${endpoints.RESIDENTS}`, {
+    const response = await fetch(`${endpoints.CONTRACTS}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -21,9 +21,9 @@ export async function createResident(body: any) {
   }
 }
 
-export async function updateResident(body: any, contractId: string) {
+export async function updateContract(body: any, residentId: string) {
   try {
-    const response = await fetch(`${endpoints.RESIDENTS}/${contractId}`, {
+    const response = await fetch(`${endpoints.CONTRACTS}/${residentId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -42,9 +42,9 @@ export async function updateResident(body: any, contractId: string) {
   }
 }
 
-export async function deleteResident(residentId: string) {
+export async function deleteContract(residentId: string) {
   try {
-    await fetch(`${endpoints.RESIDENTS}/${residentId}`, {
+    await fetch(`${endpoints.CONTRACTS}/${residentId}`, {
       method: 'DELETE',
     });
   } catch (error: any) {

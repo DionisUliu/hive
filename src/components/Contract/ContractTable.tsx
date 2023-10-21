@@ -3,10 +3,10 @@ import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { ISentenceData, ISentenceDataUpdate } from '@/lib/utilities/types';
-import ResidentsActions from './ResidentsActions';
 import { deleteResident } from '@/lib/api/residents';
+import ContractModal from './ContractModal';
 
-const ResidentsTable = ({ refetch, residentData }: any) => {
+const ContractTable = ({ refetch, contractData }: any) => {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async (record: string) => {
@@ -35,29 +35,29 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       ),
     },
     {
-      title: 'First name',
-      dataIndex: 'firstName',
-      key: 'firstName',
-      sorter: (a: any, b: any) => a.firstName.localeCompare(b.firstName),
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a: any, b: any) => a.firstName.localeCompare(b.name),
     },
     {
-      title: 'Last name',
-      dataIndex: 'lastName',
-      key: 'lastName',
-      sorter: (a: any, b: any) => a.lastName.localeCompare(b.lastName),
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      sorter: (a: any, b: any) => a.lastName.localeCompare(b.amount),
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'Start date',
+      dataIndex: 'startDate',
+      key: 'startDate',
       onFilter: (value: string | number, record: ISentenceData) =>
         record.toString() === value.toString(),
-      sorter: (a: any, b: any) => a.email.localeCompare(b.email),
+      sorter: (a: any, b: any) => a.startDate.localeCompare(b.startDate),
     },
     {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
+      title: 'End date',
+      dataIndex: 'endDate',
+      key: 'endDate',
       onFilter: (value: string | number, record: ISentenceData) =>
         record.toString() === value.toString(),
     },
@@ -78,12 +78,12 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
     },
     {
       title: 'Status',
-      dataIndex: 'contract',
-      key: 'contract',
+      dataIndex: 'isPaid',
+      key: 'isPaid',
       render: (contract: any) => {
         return (
           <Tag color={contract ? 'green' : 'red'}>
-            {contract ? 'Active' : 'Inactive'}
+            {contract ? 'isPaid' : 'notPaid'}
           </Tag>
         );
       },
@@ -93,7 +93,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       key: 'actions',
       render: (record: ISentenceDataUpdate) => (
         <span style={{ display: 'flex', gap: 10 }}>
-          <ResidentsActions record={record} refetch={refetch} />
+          <ContractModal record={record} refetch={refetch} />
           <Popconfirm
             title="Are you sure you want to delete this resident?"
             onConfirm={() => onDelete(record?.id)}
@@ -117,11 +117,11 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
         loading={loading}
         size="small"
         columns={columns}
-        dataSource={residentData}
+        dataSource={contractData}
         scroll={{ x: true }}
       />
     </div>
   );
 };
 
-export default ResidentsTable;
+export default ContractTable;

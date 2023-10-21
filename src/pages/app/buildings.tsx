@@ -1,7 +1,7 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import { useSession } from 'next-auth/react';
-import { ConfigProvider, Spin } from 'antd';
+import { Alert, ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
 import BuildingsStats from '@/components/Buildings/BuildingsStats';
 import BuildingsCards from '@/components/Buildings/BuildingsCards';
@@ -13,7 +13,7 @@ import styles from '../../styles/buildings.module.css';
 const Buildings = () => {
   const session = useSession();
 
-  const { data, loading } = useGetApi<any[]>(endpoints.BUILDINGS);
+  const { data: buildingData, loading } = useGetApi<any[]>(endpoints.BUILDINGS);
 
   return (
     <ProtectedRoute>
@@ -42,9 +42,11 @@ const Buildings = () => {
             <>
               <h1 className={styles.title}>Buildings</h1>
               <BuildingsStats />
-              <BuildingsCards 
-                buildings={data}
-              />
+              {buildingData ? (
+                <BuildingsCards buildings={buildingData} />
+              ) : (
+                <Alert message="No building provided" type="info" showIcon />
+              )}
             </>
           )}
         </ConfigProvider>

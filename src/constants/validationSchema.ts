@@ -66,10 +66,12 @@ export const resetPasswordSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
-export const createSourceSchema = yup.object().shape({
+export const createContractSchema = yup.object().shape({
   name: yup.string().required('Name is required!'),
-  description: yup.string().required('Description is required!'),
-  frequency: yup.number().min(1).max(10),
+  amount: yup.number().required('Amount is required!'),
+  dateRange: yup.array().of(yup.date()),
+  residentId: yup.array().required('Resident id is required!'),
+  roomId: yup.string(),
 });
 
 export const createResidentsSchema = yup.object().shape({

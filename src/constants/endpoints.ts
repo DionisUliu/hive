@@ -7,4 +7,5 @@ export default {
   ROOMS: '/api/rooms',
   ROOM: '/api/rooms/',
   RESIDENTS: '/api/residents',
+  CONTRACTS: '/api/contracts',
 } as const;
