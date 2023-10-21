@@ -4,6 +4,7 @@ import prisma from '../../../config/prisma';
 export const getRooms = async (query?: Prisma.RoomWhereInput) => {
   const jobs = await prisma.room.findMany({
     where: query,
+    include: { contracts: true, history: true },
   });
   return jobs;
 };
@@ -11,6 +12,7 @@ export const getRooms = async (query?: Prisma.RoomWhereInput) => {
 export const findJob = async (query: Prisma.RoomWhereInput) => {
   const room = await prisma.room.findFirst({
     where: query,
+    include: { contracts: true, history: true },
   });
   return room;
 };
@@ -20,6 +22,7 @@ export const getRoomById = async (id: string) => {
     where: {
       id,
     },
+    include: { contracts: true, history: true },
   });
   return room;
 };
@@ -32,6 +35,7 @@ export const updateRoomById = async (
     where: {
       id: roomId,
     },
+
     data,
   });
   return room;

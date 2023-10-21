@@ -12,14 +12,31 @@ export const createResident = async (
 
 export const getResidents = async (query?: Prisma.ResidentWhereInput) => {
   const residents = await prisma.resident.findMany({
-    where: query,
+    where: {
+      ...query,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    include: { contract: true, history: true },
   });
   return residents;
 };
 
 export const getResident = async (query: Prisma.ResidentWhereInput) => {
   const resident = await prisma.resident.findFirst({
-    where: query,
+    where: {
+      ...query,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
+    },
+    include: { contract: true, history: true },
   });
   return resident;
 };
@@ -28,7 +45,13 @@ export const getResidentById = async (id: string) => {
   const resident = await prisma.resident.findFirst({
     where: {
       id,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
     },
+    include: { contract: true, history: true },
   });
   return resident;
 };
@@ -42,6 +65,7 @@ export const updateResidentById = async (
       id: roomId,
     },
     data,
+    include: { contract: true, history: true },
   });
   return resident;
 };
@@ -51,6 +75,7 @@ export const deactivateResident = async (roomId: string) => {
     where: {
       id: roomId,
     },
+    include: { contract: true, history: true },
   });
 
   return resident;

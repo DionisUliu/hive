@@ -12,14 +12,31 @@ export const createContract = async (
 
 export const getContracts = async (query?: Prisma.ContractWhereInput) => {
   const contracts = await prisma.contract.findMany({
-    where: query,
+    where: {
+      ...query,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
+    },
+    include: { resident: true, Room: true },
+    orderBy: { createdAt: 'desc' },
   });
   return contracts;
 };
 
 export const getContract = async (query: Prisma.ContractWhereInput) => {
   const contract = await prisma.contract.findFirst({
-    where: query,
+    where: {
+      ...query,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
+    },
+    include: { resident: true, Room: true },
   });
   return contract;
 };
@@ -28,7 +45,13 @@ export const getContractById = async (id: string) => {
   const contract = await prisma.contract.findFirst({
     where: {
       id,
+      deletedAt: {
+        not: {
+          equals: null,
+        },
+      },
     },
+    include: { resident: true, Room: true },
   });
   return contract;
 };

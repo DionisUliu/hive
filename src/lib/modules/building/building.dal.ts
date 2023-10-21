@@ -4,6 +4,7 @@ import prisma from '../../../config/prisma';
 export const getBuildings = async (query?: Prisma.BuildingWhereInput) => {
   const buildings = await prisma.building.findMany({
     where: query,
+    include: { history: true },
   });
   return buildings;
 };
@@ -20,6 +21,7 @@ export const getBuildingById = async (id: string) => {
     where: {
       id,
     },
+    orderBy: { createdAt: 'desc' },
   });
   return building;
 };
