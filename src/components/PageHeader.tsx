@@ -1,8 +1,7 @@
-import styles from '../styles/pageHeader.module.css';
 import {
   Avatar,
-  Button,
   ConfigProvider,
+  Divider,
   Dropdown,
   Layout,
   Menu,
@@ -10,13 +9,23 @@ import {
 } from 'antd';
 import React from 'react';
 import dayjs from 'dayjs';
-import { profileMenus } from '@/constants/menuItems';
-import { BiHive, BiSolidUser } from 'react-icons/bi';
+import { BiHive, BiUser } from 'react-icons/bi';
 import colors from '@/constants/colors';
-import { signOut, useSession } from 'next-auth/react';
+import {
+  signOut,
+  useSession,
+} from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { LiaFileContractSolid } from 'react-icons/lia';
+import { BsBuildings } from 'react-icons/bs';
+import { HiOutlineUserGroup } from 'react-icons/hi';
+
+import styles from '../styles/pageHeader.module.css';
+
 const { Header, Content, Footer, Sider } = Layout;
+
+type MenuItem = Required<MenuProps>['items'][number];
 
 const PageHeader = ({ children }: any) => {
   const session = useSession();
@@ -47,6 +56,30 @@ const PageHeader = ({ children }: any) => {
       ),
     },
   ];
+
+  const getItem = (
+    key: React.Key,
+    link: string,
+    icon?: React.ReactNode,
+    children?: MenuItem[],
+    type?: 'group',
+  ) => {
+    return {
+      key,
+      icon,
+      children,
+      type,
+      link,
+    };
+  }
+
+  const menuItems = [
+    getItem('1', 'buildings', <BsBuildings className={styles.icon_size_menu} />),
+    getItem('2','residents', <HiOutlineUserGroup className={styles.icon_size_menu} />),
+    getItem('3','contracts',  <LiaFileContractSolid className={styles.icon_size_menu} />),
+    getItem('4','profile', <BiUser className={styles.icon_size_menu} />),
+  ]
+  
   return (
     <ConfigProvider
       theme={{
@@ -58,53 +91,58 @@ const PageHeader = ({ children }: any) => {
       }}
     >
       <Layout style={{ height: '100%', minHeight: '100vh' }}>
-        <Header style={{ backgroundColor: '#fff' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <div className={styles.title}>
-              <BiHive className={styles.icon} />
-              <h1>{` Hive`}</h1>
-            </div>
-            <div style={{ display: 'flex', gap: 50 }}>
-              <Dropdown
-                menu={{ items }}
-                placement="bottomRight"
-                trigger={['click']}
-              >
-                <div>
-                  <Avatar
-                    src={gender === 'male' ? urlMale : urlFemale}
-                    size="large"
-                    style={{ marginRight: 10, cursor: 'pointer' }}
-                  />
-                  <h2 className={styles.cta_user_name}>{userName}</h2>
-                </div>
-              </Dropdown>
-            </div>
+        <Sider 
+          collapsed
+          className={styles.menu_sider}
+        >
+          <div className={styles.title}>
+            <BiHive className={styles.icon} />
+            <h1>{` Hive`}</h1>
           </div>
-        </Header>
-        <Layout style={{ height: '100%' }}>
-          <Sider breakpoint="lg" collapsedWidth="0">
-            <Menu className={styles.menu_side_wrapper} mode="inline">
-              {profileMenus?.map((item) => (
-                <Menu.Item style={{ marginTop: '1.5rem' }} key={item.key}>
-                  <Button
-                    icon={<BiSolidUser className={styles.icon_size_menu} />}
-                    onClick={() => router.push(item.link)}
-                    type="link"
-                    className={styles.text_size_menu}
-                  >
-                    {item.languageKey}
-                  </Button>
-                </Menu.Item>
-              ))}
-            </Menu>
-          </Sider>
+          <Divider className={styles.divider}/>
+          <Menu 
+            theme='dark'
+            className={styles.menu_side_wrapper}
+            mode="inline"
+            onSelect={(e) => console.log(e)}
+          >
+            {menuItems.map((item) => (
+              <Menu.Item 
+                key={item?.key}
+                onClick={() => router.push(item.link)}
+              >
+                {item.icon}
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ backgroundColor: 'transparent' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}
+            >
+              <div style={{ display: 'flex', gap: 50 }}>
+                <Dropdown
+                  menu={{ items }}
+                  placement="bottomRight"
+                  trigger={['click']}
+                >
+                  <div>
+                    <Avatar
+                      src={gender === 'male' ? urlMale : urlFemale}
+                      size="large"
+                      style={{ marginRight: 10, cursor: 'pointer' }}
+                    />
+                    <h2 className={styles.cta_user_name}>{userName}</h2>
+                  </div>
+                </Dropdown>
+              </div>
+            </div>
+          </Header>
           <Layout>
             <Content style={{ margin: '24px 16px 0' }}>
               <div

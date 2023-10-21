@@ -8,24 +8,8 @@ export const toolMenu = [
 
 export const profileMenus = [
   {
-    languageKey: 'Profile',
+    label: 'Profile',
     key: '2',
     link: '/app/profile',
-  },
-];
-
-export const leaderboardMenu = [
-  {
-    languageKey: 'Leaderboard',
-    key: '3',
-    link: '/app/leaderboard',
-  },
-];
-
-export const adminPanelMenus = [
-  {
-    languageKey: 'Admin Panel',
-    key: '4',
-    link: '/app/adminPanel',
   },
 ];

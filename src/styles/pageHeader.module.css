@@ -1,24 +1,48 @@
-.menu_side_wrapper {
-  background-color: var(--priamry-color);
-  height: 100%;
-  width: 100%;
+.menu_sider{
+  border-radius: 15px;
+  margin: 5px 0 5px 10px;
+  padding: 15px;
 }
-.menu_side_wrapper_bottom {
-  background-color: var(--priamry-color);
+
+.menu_side_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: var(---dark-color);
+  color: var(--primary-color);
   height: 100%;
 }
 
-.icon_size_menu {
-  color: #ffffff;
-  font-size: 18px;
-  margin-bottom: -1px;
+.menu_side_wrapper_bottom {
+  background-color: var(--primary-color);
+  height: 100%;
 }
+
+.ant-menu-light .ant-menu-item-selected{
+  border: 1px solid var(--primary-color)
+}
+
+.icon_size_menu {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  margin-left: -3px !important;
+}
+
 .title {
+  padding-top: 10px;
+  color: #fff;
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
+
+.divider{
+  background-color: #fff;
+}
+
 .icon {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .text_size_menu {
@@ -26,11 +50,6 @@
   font-size: 20px;
   font-weight: 400;
   margin-left: -1.2rem;
-}
-
-.menu_item
-  :global(ant-menu-item ant-menu-item-selected ant-menu-item-only-child) {
-  background: black;
 }
 
 .menu_styles {
@@ -51,7 +70,7 @@
 }
 .cta_user_name {
   float: right;
-  color: #fb244f;
+  color: var(--dark-color);
   cursor: pointer;
 }
 /* CSS (pageHeader.module.css) */
@@ -61,10 +80,6 @@
 
 .menuIcon {
   display: none;
-}
-
-.ant-menu-item-selected {
-  background-color: var(--priamry-color);
 }
 
 @media (max-width: 768px) {
