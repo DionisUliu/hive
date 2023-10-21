@@ -83,8 +83,14 @@
 
 .rooms_filter{
   display: flex;
-  gap: 10px;
+  gap: 40px;
   align-items: center;
   margin: 15px 0;
+}
+
+.rooms_filter_label{
+  margin: 0;
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 

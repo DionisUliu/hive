@@ -68,6 +68,7 @@ const RoomsList = () => {
               <RoomsFilter
                 allRooms={roomsPerBuilding}
                 setRooms={setRooms}
+                buildingName={buildingName as string}
               />
               <div className={styles.rooms_list_container}>
                 {rooms?.map((room) => (
