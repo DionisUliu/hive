@@ -7,7 +7,10 @@ import {
   Menu,
   MenuProps,
 } from 'antd';
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import dayjs from 'dayjs';
 import { BiHive, BiUser } from 'react-icons/bi';
 import colors from '@/constants/colors';
@@ -38,7 +41,18 @@ const PageHeader = ({ children }: any) => {
   const urlMale = 'https://cdn-icons-png.flaticon.com/128/4140/4140048.png';
   const urlFemale = 'https://cdn-icons-png.flaticon.com/128/4140/4140040.png';
 
+  const [activeMenuItem, setActiveMenuItem] = useState<string>('building');
+
   const router = useRouter();
+
+  const currentRoute = router.asPath.split('/')[2];
+
+  useEffect(() => {
+    if(activeMenuItem !== currentRoute){
+      setActiveMenuItem(currentRoute);
+    }
+  }, [activeMenuItem, currentRoute]);
+  
 
   const handleSignOut = () => {
     signOut({ redirect: false }).then(() => {
@@ -59,25 +73,25 @@ const PageHeader = ({ children }: any) => {
 
   const getItem = (
     key: React.Key,
-    link: string,
+    label: string,
     icon?: React.ReactNode,
     children?: MenuItem[],
     type?: 'group',
-  ) => {
+  ): MenuItem => {
     return {
       key,
       icon,
       children,
       type,
-      link,
-    };
+      label,
+    } as MenuItem;
   }
 
   const menuItems = [
-    getItem('1', 'buildings', <BsBuildings className={styles.icon_size_menu} />),
-    getItem('2','residents', <HiOutlineUserGroup className={styles.icon_size_menu} />),
-    getItem('3','contracts',  <LiaFileContractSolid className={styles.icon_size_menu} />),
-    getItem('4','profile', <BiUser className={styles.icon_size_menu} />),
+    getItem('buildings', 'Buildings', <BsBuildings className={styles.icon_size_menu} />),
+    getItem('residents', 'Residents', <HiOutlineUserGroup className={styles.icon_size_menu} />),
+    getItem('contracts', 'Contracts',<LiaFileContractSolid className={styles.icon_size_menu} />),
+    getItem('profile', 'Profile',<BiUser className={styles.icon_size_menu} />),
   ]
   
   return (
@@ -104,17 +118,14 @@ const PageHeader = ({ children }: any) => {
             theme='dark'
             className={styles.menu_side_wrapper}
             mode="inline"
-            onSelect={(e) => console.log(e)}
-          >
-            {menuItems.map((item) => (
-              <Menu.Item 
-                key={item?.key}
-                onClick={() => router.push(item.link)}
-              >
-                {item.icon}
-              </Menu.Item>
-            ))}
-          </Menu>
+            items={menuItems}
+            onClick={(item) => {
+              router.push(item.key)
+              setActiveMenuItem(item.key)
+            }}
+            defaultSelectedKeys={['building']}
+            selectedKeys={[activeMenuItem]}
+          />
         </Sider>
         <Layout>
           <Header style={{ backgroundColor: 'transparent' }}>

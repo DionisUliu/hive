@@ -82,6 +82,13 @@
   display: none;
 }
 
+.ant-menu-title-content{
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding-top: 6px !important;
+}
+
 @media (max-width: 768px) {
   .menu {
     display: none;
