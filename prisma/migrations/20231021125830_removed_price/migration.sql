@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "RoomType" ADD VALUE 'BIG_STUDIO_APARTMENT';

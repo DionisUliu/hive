@@ -7,19 +7,19 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DIRECT_URL")
 }
 
 model User {
-  id                   String         @id @default(cuid())
-  firstName            String         @map("first_name")
-  lastName             String         @map("last_name")
-  email                String         @unique
-  password             String        
-  verificationCode     String?        @map("verification_code")
-  gender               String       
-  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt            DateTime       @updatedAt @map("updated_at") @db.Timestamp(6)
+  id               String   @id @default(cuid())
+  firstName        String   @map("first_name")
+  lastName         String   @map("last_name")
+  email            String   @unique
+  password         String
+  verificationCode String?  @map("verification_code")
+  gender           String
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
 }
 
 model Building {
@@ -35,8 +35,8 @@ model Room {
   name        String
   type        RoomType
   capacity    Int
-  price       Float
   isAvailable Boolean
+  preview     String
   contracts   Contract[]
   history     History[]
   createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
@@ -56,21 +56,23 @@ model Resident {
   history          History[]
   createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+  deletedAt        DateTime? @map("deleted_at") @db.Timestamp(6)
 }
 
 model Contract {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   name       String
   amount     Float
-  startDate  String   @map("start_date")
-  endDate    String   @map("end_date")
-  isPaid     Boolean  @map("is_paid")
-  residentId String   @unique @map("resident_id")
-  resident   Resident @relation(fields: [residentId], references: [id])
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
-  roomId     String   @map("room_id")
-  Room       Room     @relation(fields: [roomId], references: [id])
+  startDate  String    @map("start_date")
+  endDate    String    @map("end_date")
+  isPaid     Boolean   @map("is_paid")
+  residentId String    @unique @map("resident_id")
+  resident   Resident  @relation(fields: [residentId], references: [id])
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt  DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamp(6)
+  roomId     String    @map("room_id")
+  Room       Room      @relation(fields: [roomId], references: [id])
 
   @@index([roomId])
 }
@@ -102,4 +104,5 @@ enum RoomType {
   SINGLE_ROOM_FOR_TWO
   ONE_BEDROOM_APARTMENT
   TWO_BEDROOM_APARTMENT
+  BIG_STUDIO_APARTMENT
 }
