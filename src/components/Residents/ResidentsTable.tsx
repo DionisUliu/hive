@@ -4,7 +4,8 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { ISentenceData, ISentenceDataUpdate } from '@/lib/utilities/types';
 import ResidentsActions from './ResidentsActions';
-import { deleteResident } from '@/lib/api/residents';
+import { deleteResident, updateResident } from '@/lib/api/residents';
+import { GiThreeFriends } from 'react-icons/gi';
 
 const ResidentsTable = ({ refetch, residentData }: any) => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,25 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       notification.success({ message: 'Resident deleted successfully' });
     } catch (error: any) {
       notification.error({ message: 'Can not delete resident, try again!' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onRoommateUpdate = async (record: string) => {
+    setLoading(true);
+
+    console.log('record', record);
+
+    try {
+      const body: any = {
+        openForRoomMates: true,
+      };
+      await updateResident(body, record);
+      refetch();
+      notification.success({ message: 'Roommate statis updated successfully' });
+    } catch (error: any) {
+      notification.error({ message: 'Unsuccessful, try again!' });
     } finally {
       setLoading(false);
     }
@@ -89,6 +109,18 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       },
     },
     {
+      title: 'Open for room-mate',
+      dataIndex: 'openForRoomMates',
+      key: 'openForRoomMates',
+      render: (openForRoomMates: any) => {
+        return (
+          <Tag color={openForRoomMates ? 'green' : 'red'}>
+            {openForRoomMates ? 'Yes' : 'No'}
+          </Tag>
+        );
+      },
+    },
+    {
       title: 'Actions',
       key: 'actions',
       render: (record: ISentenceDataUpdate) => (
@@ -104,6 +136,17 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
               icon={<AiFillDelete style={{ marginBottom: -2 }} />}
               size="small"
               danger
+            />
+          </Popconfirm>
+          <Popconfirm
+            title="Are you sure you want to update roommate status?"
+            onConfirm={() => onRoommateUpdate(record?.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              icon={<GiThreeFriends style={{ marginBottom: -2 }} />}
+              size="small"
             />
           </Popconfirm>
         </span>

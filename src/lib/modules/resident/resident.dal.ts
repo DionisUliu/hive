@@ -14,11 +14,7 @@ export const getResidents = async (query?: Prisma.ResidentWhereInput) => {
   const residents = await prisma.resident.findMany({
     where: {
       ...query,
-      deletedAt: {
-        not: {
-          equals: null,
-        },
-      },
+      deletedAt: null,
     },
     orderBy: { createdAt: 'desc' },
     include: { contract: true, history: true },

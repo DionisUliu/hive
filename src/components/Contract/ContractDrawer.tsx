@@ -47,8 +47,6 @@ const ContractDrawer = ({ refetch, roomId, residentLimit }: any) => {
   const onSubmit = async (data: any) => {
     setLoading(true);
 
-    console.log('data', data);
-
     if (data?.residentId.length > residentLimit) {
       setResidentLimitError(true);
       setLoading(false);
@@ -60,17 +58,17 @@ const ContractDrawer = ({ refetch, roomId, residentLimit }: any) => {
       const promises = data?.residentId.map((residentId: any) => {
         const body: any = {
           name: data?.name,
-          amount: amountPerPerson.toFixed(2),
+          amount: amountPerPerson,
           startDate: startDatePicker,
           endDate: endDatePicker,
           residentId: residentId,
           roomId,
+          isPaid: true,
         };
 
         return createContract(body);
       });
       await Promise.all(promises);
-      refetch();
       notification.success({ message: 'Contract created successfully' });
     } catch (error: any) {
       notification.error({ message: 'Unsuccessful, try again!' });

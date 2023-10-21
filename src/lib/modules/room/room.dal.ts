@@ -6,6 +6,7 @@ export const getRooms = async (query?: Prisma.RoomWhereInput) => {
     where: query,
     include: { contracts: true, history: true },
   });
+
   return jobs;
 };
 
@@ -37,6 +38,21 @@ export const updateRoomById = async (
     },
 
     data,
+  });
+  return room;
+};
+
+export const updateRoomAvailabilityById = async (
+  roomId: string,
+  isAvailable: boolean,
+): Promise<Room> => {
+  const room = await prisma.room.update({
+    where: {
+      id: roomId,
+    },
+    data: {
+      isAvailable: isAvailable,
+    },
   });
   return room;
 };

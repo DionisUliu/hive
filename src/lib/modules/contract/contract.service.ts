@@ -11,8 +11,6 @@ import * as registerDal from '../register/register.dal';
 import { Prisma } from '@prisma/client';
 
 export const createContract = async (data: ICreateContractBody) => {
-  // validation
-
   const contract = await dal.getContract({ ...data });
   if (contract)
     throw new UnprocessableEntity(errors.CONTRACT.UNPROCESSABLE_ENTITY);
@@ -29,6 +27,8 @@ export const createContract = async (data: ICreateContractBody) => {
     residentId: data.residentId,
     contractId: createdContract.id,
   });
+
+  await roomDal.updateRoomAvailabilityById(data.roomId, false);
 
   return createdContract;
 };

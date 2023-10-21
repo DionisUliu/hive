@@ -19,6 +19,8 @@ const Residents = () => {
     refetch,
   } = useGetApi<any[]>(`${endpoints.RESIDENTS}`);
 
+  console.log('residentData', residentData);
+
   return (
     <ProtectedRoute>
       <PageHeader session={session}>

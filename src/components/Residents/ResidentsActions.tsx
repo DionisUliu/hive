@@ -8,8 +8,6 @@ import colors from '@/constants/colors';
 import { createResident, updateResident } from '@/lib/api/residents';
 import { AiFillEdit, AiOutlinePlusCircle } from 'react-icons/ai';
 
-const { TextArea } = Input;
-
 const ResidentsActions = ({ record, refetch }: any) => {
   const residentId = record?.id;
 
