@@ -9,8 +9,11 @@ export const createResident = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const data = JSON.parse(req.body);
-  const residents = await service.createResident(data);
+
+  console.log('1');
+  // const data = JSON.parse(req?.body);
+
+  const residents = await service.createResident(req?.body);
   return res.json(residents);
 };
 

@@ -93,7 +93,6 @@ export interface ICreateResidentBody {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
   phoneNumber: string;
   gender: string;
 }
@@ -124,4 +123,17 @@ export interface IUpdateContractBody {
   isPaid?: boolean;
   residentId?: string;
   roomId?: string;
+}
+
+export interface ICreateRegisterBody {
+  buildingId: string;
+  residentId: string;
+  roomId: string;
+}
+
+export interface IUpdateRegisterBody {
+  buildingId?: string;
+  residentId?: string;
+  roomId?: string;
+  active?: boolean;
 }
