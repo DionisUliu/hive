@@ -11,13 +11,8 @@ export const getRegistrations = async (
   await getServerSession(req, res, authOptions(req, res));
   const roomId: string = String(req.query?.roomId);
   const residentId: string = String(req.query?.residentId);
-  const buildingId: string = String(req.query?.buildingId);
 
-  const registrations = await service.getRegistrations(
-    roomId,
-    residentId,
-    buildingId,
-  );
+  const registrations = await service.getRegistrations(roomId, residentId);
   return res.json(registrations);
 };
 

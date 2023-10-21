@@ -4,7 +4,6 @@ import prisma from '../../../config/prisma';
 export const getBuildings = async (query?: Prisma.BuildingWhereInput) => {
   const buildings = await prisma.building.findMany({
     where: query,
-    include: { history: true },
   });
   return buildings;
 };

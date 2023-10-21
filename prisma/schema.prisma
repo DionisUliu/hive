@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DIRECT_URL")
 }
 
 model User {
@@ -23,11 +23,10 @@ model User {
 }
 
 model Building {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
-  history   Register[]
-  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
 }
 
 model Room {
@@ -44,17 +43,18 @@ model Room {
 }
 
 model Resident {
-  id          String     @id @default(cuid())
-  firstName   String     @map("first_name")
-  lastName    String     @map("last_name")
-  email       String     @unique
-  gender      String
-  phoneNumber String     @map("phone_number")
-  contract    Contract?
-  history     Register[]
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
-  deletedAt   DateTime?  @map("deleted_at") @db.Timestamp(6)
+  id               String     @id @default(cuid())
+  firstName        String     @map("first_name")
+  lastName         String     @map("last_name")
+  email            String     @unique
+  gender           String
+  openForRoomMates Boolean    @default(false)
+  phoneNumber      String     @map("phone_number")
+  contract         Contract?
+  history          Register[]
+  createdAt        DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt        DateTime   @updatedAt @map("updated_at") @db.Timestamp(6)
+  deletedAt        DateTime?  @map("deleted_at") @db.Timestamp(6)
 }
 
 model Contract {
@@ -71,6 +71,7 @@ model Contract {
   deletedAt  DateTime? @map("deleted_at") @db.Timestamp(6)
   roomId     String    @map("room_id")
   Room       Room      @relation(fields: [roomId], references: [id])
+  Register   Register?
 
   @@index([roomId])
 }
@@ -78,18 +79,17 @@ model Contract {
 model Register {
   id         String   @id @default(cuid())
   active     Boolean  @default(true)
-  buildingId String   @map("building_id")
   residentId String
   roomId     String
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
-  Building   Building @relation(fields: [buildingId], references: [id])
+  contractId String   @unique @map("contract_id")
+  contract   Contract @relation(fields: [contractId], references: [id])
   Room       Room     @relation(fields: [roomId], references: [id])
   Resident   Resident @relation(fields: [residentId], references: [id])
 
   @@index([roomId])
   @@index([residentId])
-  @@index([buildingId])
 }
 
 enum Role {
@@ -104,3 +104,5 @@ enum RoomType {
   TWO_BEDROOM_APARTMENT
   BIG_STUDIO_APARTMENT
 }
+
+//false contract is deleted

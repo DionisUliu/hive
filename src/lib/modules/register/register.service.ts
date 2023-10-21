@@ -22,8 +22,8 @@ export const createRegistration = async (data: ICreateRegisterBody) => {
   const foundRoom = await roomDal.getRoomById(data.roomId);
   if (!foundRoom) throw new NotFound(errors.ROOM.NOT_FOUND);
 
-  const foundBuilding = await buildingDal.getBuildingById(data.buildingId);
-  if (!foundBuilding) throw new NotFound(errors.BUILDING.NOT_FOUND);
+  const foundContract = await roomDal.getRoomById(data.contractId);
+  if (!foundContract) throw new NotFound(errors.CONTRACT.NOT_FOUND);
 
   return await dal.createRegistration(data);
 };
@@ -31,7 +31,6 @@ export const createRegistration = async (data: ICreateRegisterBody) => {
 export const getRegistrations = async (
   roomId: string | null,
   residentId: string | null,
-  buildingId: string | null,
 ) => {
   const query: Prisma.RegisterWhereInput = {};
 
@@ -45,12 +44,6 @@ export const getRegistrations = async (
     const resident = await residentDal.getResidentById(residentId);
     if (!resident) throw new NotFound(errors.CONTRACT.NOT_FOUND);
     query.residentId = residentId;
-  }
-
-  if (buildingId) {
-    const resident = await buildingDal.getBuildingById(buildingId);
-    if (!resident) throw new NotFound(errors.CONTRACT.NOT_FOUND);
-    query.buildingId = buildingId;
   }
 
   const registrations = await dal.getRegistrations(query);
