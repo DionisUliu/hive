@@ -1,5 +1,3 @@
-import bcrypt from 'bcrypt';
-
 import { Prisma } from '@prisma/client';
 import {
   ICreateResidentBody,
