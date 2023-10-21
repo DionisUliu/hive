@@ -1,11 +1,20 @@
-import styles from '../../styles/buildings.module.css';
-import { Card, Row, Col, Progress, Tag, Space } from 'antd';
+import {
+  Card,
+  Col,
+  Progress,
+  Row,
+  Space,
+  Tag,
+} from 'antd';
 import { MdOutlineMeetingRoom } from 'react-icons/md';
 import { BiStats } from 'react-icons/bi';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { BsBuildings } from 'react-icons/bs';
 import moment from 'moment';
+
+import styles from '../../styles/buildings.module.css';
+
 const conicColors = {
   '0%': '#F96F8A',
   '50%': '#ffe58f',
@@ -147,7 +156,7 @@ const BuildingsStats = () => {
             </div>
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} key={10}>
+        <Col xs={24} sm={12} md={8} lg={6} key={11}>
           <Card
             title={
               <div>

@@ -1,20 +1,20 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
-import { useSession } from 'next-auth/react';
-import { ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
-import BuildingsStats from '@/components/Buildings/BuildingsStats';
-import BuildingsCards from '@/components/Buildings/BuildingsCards';
+import { ConfigProvider, Spin } from 'antd';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import RoomsFilter from '@/components/RoomsFilter';
 
-import roomsMock from '../../mock/roomsMock.json';
-import styles from '../../styles/buildings.module.css';
+import styles from '../../styles/roomsList.module.css';
 
-const Buildings = () => {
+const RoomsList = () => {
   const session = useSession();
   const loading = false;
+  const router = useRouter();
 
-  // const { data, loading } = useGetApi<any[]>(`${endpoints.USERS}${userId}`);
-
+  const { buildingName, buildingId } = router.query;
+  
   return (
     <ProtectedRoute>
       <PageHeader session={session}>
@@ -39,11 +39,10 @@ const Buildings = () => {
               <Spin size="large" />
             </span>
           ) : (
-            <>
-              <h1 className={styles.title}>Buildings</h1>
-              <BuildingsStats />
-              <BuildingsCards />
-            </>
+            <div className={styles.rooms_container}>
+              <h2>{`Building ${buildingName}`}</h2>
+              <RoomsFilter />
+            </div>
           )}
         </ConfigProvider>
       </PageHeader>
@@ -51,4 +50,4 @@ const Buildings = () => {
   );
 };
 
-export default Buildings;
+export default RoomsList;
