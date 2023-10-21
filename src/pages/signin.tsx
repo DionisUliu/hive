@@ -26,7 +26,7 @@ const Signin = () => {
       await signIn('credentials', {
         email: data.email,
         password: data.password,
-        callbackUrl: '/app/profile',
+        callbackUrl: '/app/buildings',
       });
       notification.success({ message: 'Signin successful!' });
     } catch (error) {

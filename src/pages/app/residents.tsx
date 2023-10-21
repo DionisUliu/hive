@@ -5,13 +5,19 @@ import { ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
 
 import styles from '../../styles/buildings.module.css';
+import ResidentsTable from '@/components/Residents/ResidentsTable';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
+import ResidentsActions from '@/components/Residents/ResidentsActions';
 
 const Residents = () => {
   const session = useSession();
-  const userId = session?.data?.user?.id;
-  const loading = false;
 
-  // const { data, loading } = useGetApi<any[]>(`${endpoints.USERS}${userId}`);
+  const {
+    data: residentData,
+    loading,
+    refetch,
+  } = useGetApi<any[]>(`${endpoints.RESIDENTS}`);
 
   return (
     <ProtectedRoute>
@@ -39,7 +45,8 @@ const Residents = () => {
           ) : (
             <>
               <h1 className={styles.title}>Residents</h1>
-
+              <ResidentsActions refetch={refetch} />
+              <ResidentsTable residentData={residentData} refetch={refetch} />
             </>
           )}
         </ConfigProvider>

@@ -5,5 +5,6 @@ export default {
   RESET_PASSWORD: '/api/reset-password',
   BUILDINGS: '/api/buildings',
   ROOMS: '/api/rooms',
-  ROOM: '/api/rooms/'
+  ROOM: '/api/rooms/',
+  RESIDENTS: '/api/residents',
 } as const;
