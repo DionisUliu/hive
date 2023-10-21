@@ -88,3 +88,40 @@ export interface ISourcesData {
   description: string;
   frequency: number;
 }
+
+export interface ICreateResidentBody {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  gender: string;
+}
+
+export interface IUpdateResidentBody {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  phoneNumber?: string;
+}
+
+export interface ICreateContractBody {
+  name: string;
+  amount: number;
+  startDate: string;
+  endDate: string;
+  isPaid: boolean;
+  residentId: string;
+  roomId: string;
+}
+
+export interface IUpdateContractBody {
+  name?: string;
+  amount?: number;
+  startDate?: string;
+  endDate?: string;
+  isPaid?: boolean;
+  residentId?: string;
+  roomId?: string;
+}
