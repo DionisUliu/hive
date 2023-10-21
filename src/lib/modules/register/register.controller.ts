@@ -36,20 +36,20 @@ export const createRegistration = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const data = JSON.parse(req.body);
-  const registration = await service.createRegistration(data);
+  // const data = JSON.parse(req.body);
+  const registration = await service.createRegistration(req.body);
   return res.json(registration);
 };
 
-// export const updateRegistration = async (
-//   req: NextApiRequest,
-//   res: NextApiResponse,
-// ) => {
-//   await getServerSession(req, res, authOptions(req, res));
+export const updateRegistration = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => {
+  await getServerSession(req, res, authOptions(req, res));
 
-//   const id: string = String(req.query?.id);
-//   const body = JSON.parse(req.body);
+  const id: string = String(req.query?.id);
+  // const body = JSON.parse(req.body);
 
-//   const residents = await service.(id, body);
-//   return res.json(residents);
-// };
+  const registration = await service.updateRegistration(id, req.body);
+  return res.json(registration);
+};

@@ -91,9 +91,9 @@ export const sendResetPasswordLink = async (
 ) => {
   await getServerSession(req, res, authOptions(req, res));
 
-  const body = JSON.parse(req.body);
+  // const body = JSON.parse(req.body);
 
-  const emailSent = await service.sendResetPasswordLink(body);
+  const emailSent = await service.sendResetPasswordLink(req.body);
   return res.status(200).json(emailSent);
 };
 
@@ -116,8 +116,8 @@ export const resetPassword = async (
 ) => {
   await getServerSession(req, res, authOptions(req, res));
 
-  const body = JSON.parse(req.body);
+  // const body = JSON.parse(req.body);
 
-  await service.resetPassword(body);
+  await service.resetPassword(req.body);
   return res.status(200).json(true);
 };

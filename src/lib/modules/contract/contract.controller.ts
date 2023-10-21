@@ -31,8 +31,8 @@ export const createContract = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const data = JSON.parse(req.body);
-  const rooms = await service.createContract(data);
+  // const data = JSON.parse(req.body);
+  const rooms = await service.createContract(req.body);
   return res.json(rooms);
 };
 
@@ -41,9 +41,9 @@ export const updateContract = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const data = JSON.parse(req.body);
+  // const data = JSON.parse(req.body);
   const id: string = String(req.query?.id);
-  const contract = await service.updateContract(id, data);
+  const contract = await service.updateContract(id, req.body);
   return res.json(contract);
 };
 
