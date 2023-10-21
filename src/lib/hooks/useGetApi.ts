@@ -1,4 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import * as api from '../api/users';
 
@@ -15,6 +19,7 @@ const useGetApi = <T>(url: string) => {
       setLoading(false);
     } catch (error) {
       setHasError(true);
+      setLoading(false);
     }
   }, [url]);
 

@@ -1,8 +1,14 @@
 import endpoints from '@/constants/endpoints';
-import { IUser, IUserRegistration, IUserUpdate } from '../utilities/types';
+
+import {
+  IUserRegistration,
+  IUserUpdate,
+} from '../utilities/types';
 
 export const fetchData = async (url: string) => {
   try {
+    console.log(url);
+    
     const response = await fetch(url);
 
     if (!response.ok) {
