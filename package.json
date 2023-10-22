@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prebuild": "prisma generate",
+    "predev": "prisma generate",
     "lint": "next lint",
     "populate": "ts-node prisma/rooms.ts"
   },
