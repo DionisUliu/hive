@@ -33,8 +33,9 @@ export const updateResident = async (
   const id: string = String(req.query?.id);
   // const body = JSON.parse(req.body);
 
-  const residents = await service.updateResident(id, req.body);
-  return res.json(residents);
+  const resident = await service.updateResident(id, req.body);
+
+  return res.json(resident);
 };
 
 export const getResident = async (

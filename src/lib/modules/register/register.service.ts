@@ -69,9 +69,9 @@ export const updateRegistration = async (
   }
   const updateBody: IUpdateRegisterBody = { ...data };
 
-  if (data?.roomId) {
-    const room = await roomDal.getRoomById(data.roomId);
-  }
+  // if (data?.roomId) {
+  //   const room = await roomDal.getRoomById(data.roomId);
+  // }
 
   const updatedResident = await dal.updateRegistrationById(id, updateBody);
   return updatedResident;

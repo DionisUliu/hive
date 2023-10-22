@@ -79,7 +79,11 @@ const Residents = () => {
                   style={{ width: 300 }}
                 />
               </div>
-              <ResidentsTable residentData={residents} refetch={refetch} />
+              <ResidentsTable
+                residentData={residents}
+                refetch={refetch}
+                setResidents={setResidents}
+              />
             </>
           )}
         </ConfigProvider>

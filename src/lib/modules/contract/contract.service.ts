@@ -2,10 +2,7 @@ import {
   ICreateContractBody,
   IUpdateContractBody,
 } from '@/lib/utilities/types';
-import {
-  NotFound,
-  UnprocessableEntity,
-} from '@/lib/utilities/error';
+import { NotFound, UnprocessableEntity } from '@/lib/utilities/error';
 import errors from '@/config/errors';
 import { Prisma } from '@prisma/client';
 
@@ -15,15 +12,19 @@ import * as roomDal from '../room/room.dal';
 import * as dal from './contract.dal';
 
 export const createContract = async (data: ICreateContractBody) => {
-  const contract = await dal.getContract({ ...data });
-  if (contract)
-    throw new UnprocessableEntity(errors.CONTRACT.UNPROCESSABLE_ENTITY);
-
   const room = await roomDal.getRoomById(data.roomId);
   if (!room) throw new NotFound(errors.ROOM.NOT_FOUND);
 
   const resident = await residentDal.getResidentById(data.residentId);
   if (!resident) throw new NotFound(errors.RESIDENT.NOT_FOUND);
+
+  const contract = await dal.getContract({
+    roomId: data.roomId,
+    residentId: data.residentId,
+  });
+
+  if (contract)
+    throw new UnprocessableEntity(errors.CONTRACT.UNPROCESSABLE_ENTITY);
 
   const createdContract = await dal.createContract(data);
   await registerDal.createRegistration({
@@ -71,7 +72,7 @@ export const getContract = async (id: string) => {
 export const deleteContract = async (id: string) => {
   const foundContract = await dal.getContractById(id);
   console.log(foundContract);
-  
+
   if (!foundContract) throw new NotFound(errors.CONTRACT.NOT_FOUND);
 
   const deletedAt = new Date();
@@ -94,13 +95,10 @@ export const deleteContract = async (id: string) => {
   return contract;
 };
 
-export const getContracts = async (
-  roomId?: string,
-  residentId?: string,
-) => {
-  const query: Prisma.ContractWhereInput = {};  
-  
-  if (roomId) {            
+export const getContracts = async (roomId?: string, residentId?: string) => {
+  const query: Prisma.ContractWhereInput = {};
+
+  if (roomId) {
     const room = await roomDal.getRoomById(roomId);
     if (!room) throw new NotFound(errors.CONTRACT.NOT_FOUND);
     query.roomId = roomId;

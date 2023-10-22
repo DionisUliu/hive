@@ -49,13 +49,35 @@ export const updateRegistrationById = async (
   return registration;
 };
 
-export const getActiveRooms = async () => {
-  const activeRooms = await prisma.register.findMany({
+export const getActiveRoomsIds = async () => {
+  const activeRoomIds = await prisma.register.findMany({
     where: {
       active: true,
     },
     select: { roomId: true },
     distinct: ['roomId'],
   });
-  return activeRooms;
+  return activeRoomIds;
+};
+
+export const getActiveResidentsIds = async () => {
+  const activeResidentsIds = await prisma.register.findMany({
+    where: {
+      active: true,
+    },
+    select: { roomId: true },
+    distinct: ['residentId'],
+  });
+  return activeResidentsIds;
+};
+
+export const getActiveContractsIds = async () => {
+  const activeContractsIds = await prisma.register.findMany({
+    where: {
+      active: true,
+    },
+    select: { contractId: true },
+    distinct: ['contractId'],
+  });
+  return activeContractsIds;
 };

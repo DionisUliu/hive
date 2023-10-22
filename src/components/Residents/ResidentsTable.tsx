@@ -20,7 +20,7 @@ import { LiaFileContractSolid } from 'react-icons/lia';
 import ResidentsActions from './ResidentsActions';
 import ResidentsDrawerInfo from './ResidentsDrawerInfo';
 
-const ResidentsTable = ({ refetch, residentData }: any) => {
+const ResidentsTable = ({ refetch, residentData, setResidents }: any) => {
   const [loading, setLoading] = useState(false);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [residentId, setResidentId] = useState<string>();
@@ -48,8 +48,19 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       const body: any = {
         openForRoomMates: isOpenForRoommates,
       };
-      await updateResident(body, residentId);
-      refetch();
+
+      const resident = await updateResident(body, residentId);
+
+      const residents = residentData.map((rsd: any) => {
+        if (rsd.id === resident.id) {
+          return resident;
+        }
+        return rsd;
+      });
+
+      setResidents(residents);
+
+      // refetch();
       notification.success({ message: 'Roommate statis updated successfully' });
     } catch (error: any) {
       notification.error({ message: 'Unsuccessful, try again!' });
@@ -141,7 +152,12 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       key: 'actions',
       render: (record: any) => (
         <span style={{ display: 'flex', gap: 10 }}>
-          <ResidentsActions record={record} refetch={refetch} />
+          <ResidentsActions
+            record={record}
+            refetch={refetch}
+            residentData={residentData}
+            setResidents={setResidents}
+          />
           <Popconfirm
             title="Are you sure you want to delete this resident?"
             onConfirm={() => onDelete(record?.id)}
