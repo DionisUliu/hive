@@ -1,7 +1,7 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import { useSession } from 'next-auth/react';
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider, Input, Spin } from 'antd';
 import colors from '@/constants/colors';
 import ResidentsTable from '@/components/Residents/ResidentsTable';
 import endpoints from '@/constants/endpoints';
@@ -9,6 +9,7 @@ import useGetApi from '@/lib/hooks/useGetApi';
 import ResidentsActions from '@/components/Residents/ResidentsActions';
 
 import styles from '../../styles/buildings.module.css';
+import { useEffect, useState } from 'react';
 
 const Residents = () => {
   const session = useSession();
@@ -18,6 +19,14 @@ const Residents = () => {
     loading,
     refetch,
   } = useGetApi<any[]>(`${endpoints.RESIDENTS}`);
+
+  const [residents, setResidents] = useState<any[]>();
+
+  useEffect(() => {
+    if (!residents && residentData) {
+      setResidents(residentData);
+    }
+  }, [residentData, residents]);
 
   return (
     <ProtectedRoute>
@@ -45,10 +54,32 @@ const Residents = () => {
           ) : (
             <>
               <h1 className={styles.title}>Residents</h1>
-              <div style={{ marginTop: 10, marginBottom: 10 }}>
+              <div
+                style={{
+                  marginTop: 10,
+                  marginBottom: 10,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <ResidentsActions refetch={refetch} />
+                <Input.Search
+                  placeholder="Search resident by name"
+                  allowClear
+                  enterButton
+                  onSearch={(value: any) =>
+                    setResidents(
+                      residentData.filter((resident) => {
+                        const fullName = `${resident?.firstName} ${resident?.lastName}`;
+
+                        return fullName?.includes(value);
+                      }),
+                    )
+                  }
+                  style={{ width: 300 }}
+                />
               </div>
-              <ResidentsTable residentData={residentData} refetch={refetch} />
+              <ResidentsTable residentData={residents} refetch={refetch} />
             </>
           )}
         </ConfigProvider>

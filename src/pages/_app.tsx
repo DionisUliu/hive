@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Hackathon',
-  icons: BsFillCloudDownloadFill,
+  title: 'HIVE',
+  // icons: <BsFillCloudDownloadFill />,
 };
 
 export default function MyApp({
