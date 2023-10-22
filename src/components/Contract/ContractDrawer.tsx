@@ -45,8 +45,12 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
   const [range, setRange] = useState<any>(null);
   const [residentLimitError, setResidentLimitError] = useState<boolean>(false);
 
-  const startDatePicker = moment(range ? range[0] : null).toString();
-  const endDatePicker = moment(range ? range[1] : null).toString();
+  const startDatePicker = moment(range[0]).format('YYYY-MM-DD HH:mm:ss');
+  const endDatePicker = moment(range[1]).format('YYYY-MM-DD HH:mm:ss');
+
+  console.log('startDatePicker', startDatePicker, moment(range[0]));
+  console.log('endDatePicker', endDatePicker, range[1]);
+  
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -125,7 +129,11 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
                 <>
                   <RangePicker
                     value={range}
-                    onChange={(value) => setRange(value)}
+                    onChange={(value) => {
+                      console.log(value);
+                      
+                      setRange(value)
+                    }}
                   />
                 </>
               )}

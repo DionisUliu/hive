@@ -1,9 +1,18 @@
-import { Table, Tooltip, Button, Popconfirm, notification, Tag } from 'antd';
+import {
+  notification,
+  Button,
+  Popconfirm,
+  Table,
+  Tag,
+  Tooltip,
+} from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { ISentenceData, ISentenceDataUpdate } from '@/lib/utilities/types';
+import { ISentenceDataUpdate } from '@/lib/utilities/types';
 import { deleteResident } from '@/lib/api/residents';
+import moment from 'moment';
+
 import ContractModal from './ContractModal';
 
 const ContractTable = ({ refetch, contractData }: any) => {
@@ -35,7 +44,7 @@ const ContractTable = ({ refetch, contractData }: any) => {
       ),
     },
     {
-      title: 'Name',
+      title: 'Contract title',
       dataIndex: 'name',
       key: 'name',
       sorter: (a: any, b: any) => a.firstName.localeCompare(b.name),
@@ -47,34 +56,28 @@ const ContractTable = ({ refetch, contractData }: any) => {
       sorter: (a: any, b: any) => a.lastName.localeCompare(b.amount),
     },
     {
+      title: 'Resident',
+      dataIndex: 'resident',
+      key: 'resident',
+      render: (resident: any) => `${resident.firstName} ${resident.lastName}`
+    },
+    {
       title: 'Start date',
       dataIndex: 'startDate',
       key: 'startDate',
-      onFilter: (value: string | number, record: ISentenceData) =>
-        record.toString() === value.toString(),
-      sorter: (a: any, b: any) => a.startDate.localeCompare(b.startDate),
+      render: (startDate: string) => (moment(startDate).format('DD.MM.YYYY'))
     },
     {
       title: 'End date',
       dataIndex: 'endDate',
       key: 'endDate',
-      onFilter: (value: string | number, record: ISentenceData) =>
-        record.toString() === value.toString(),
+      render: (endDate: string) => (moment(endDate).format('DD.MM.YYYY'))
     },
     {
       title: 'Phone number',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
-      onFilter: (value: string | number, record: ISentenceData) =>
-        record.toString() === value.toString(),
-    },
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (createdAt: any) => {
-        return dayjs(createdAt).format('DD/MM/YYYY');
-      },
+      dataIndex: 'resident',
+      key: 'resident',
+      render: (resident: any) => resident.phoneNumber
     },
     {
       title: 'Status',

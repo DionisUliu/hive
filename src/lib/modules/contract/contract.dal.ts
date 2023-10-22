@@ -1,4 +1,5 @@
 import { Contract, Prisma } from '@prisma/client';
+
 import prisma from '../../../config/prisma';
 
 export const createContract = async (
@@ -15,11 +16,6 @@ export const getContracts = async (query?: Prisma.ContractWhereInput) => {
   const contracts = await prisma.contract.findMany({
     where: {
       ...query,
-      deletedAt: {
-        not: {
-          equals: null,
-        },
-      },
     },
     include: { resident: true, Room: true },
     orderBy: { createdAt: 'desc' },

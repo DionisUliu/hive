@@ -1,5 +1,8 @@
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { NextApiRequest, NextApiResponse } from 'next';
+import {
+  NextApiRequest,
+  NextApiResponse,
+} from 'next';
 import { getServerSession } from 'next-auth';
 
 import * as service from './contract.service';
@@ -9,9 +12,17 @@ export const getContracts = async (
   res: NextApiResponse,
 ) => {
   await getServerSession(req, res, authOptions(req, res));
-  const roomId: string = String(req.query?.roomId);
-  const residentId: string = String(req.query?.residentId);
+  let roomId;
+  let residentId;
 
+  if(req.query?.roomId){
+    roomId = String(req.query?.roomId);
+  }
+
+  if(req.query?.residentId){
+    residentId = String(req.query?.residentId);
+  }
+  
   const contracts = await service.getContracts(roomId, residentId);
   return res.json(contracts);
 };

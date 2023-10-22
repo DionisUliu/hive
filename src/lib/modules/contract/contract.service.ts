@@ -2,13 +2,17 @@ import {
   ICreateContractBody,
   IUpdateContractBody,
 } from '@/lib/utilities/types';
-import { NotFound, UnprocessableEntity } from '@/lib/utilities/error';
+import {
+  NotFound,
+  UnprocessableEntity,
+} from '@/lib/utilities/error';
 import errors from '@/config/errors';
-import * as dal from './contract.dal';
-import * as roomDal from '../room/room.dal';
-import * as residentDal from '../resident/resident.dal';
-import * as registerDal from '../register/register.dal';
 import { Prisma } from '@prisma/client';
+
+import * as registerDal from '../register/register.dal';
+import * as residentDal from '../resident/resident.dal';
+import * as roomDal from '../room/room.dal';
+import * as dal from './contract.dal';
 
 export const createContract = async (data: ICreateContractBody) => {
   const contract = await dal.getContract({ ...data });
@@ -89,12 +93,12 @@ export const deleteContract = async (id: string) => {
 };
 
 export const getContracts = async (
-  roomId: string | null,
-  residentId: string | null,
+  roomId?: string,
+  residentId?: string,
 ) => {
-  const query: Prisma.ContractWhereInput = {};
-
-  if (roomId) {
+  const query: Prisma.ContractWhereInput = {};  
+  
+  if (roomId) {            
     const room = await roomDal.getRoomById(roomId);
     if (!room) throw new NotFound(errors.CONTRACT.NOT_FOUND);
     query.roomId = roomId;
@@ -105,6 +109,8 @@ export const getContracts = async (
     if (!resident) throw new NotFound(errors.CONTRACT.NOT_FOUND);
     query.residentId = residentId;
   }
+
   const contracts = await dal.getContracts(query);
+
   return contracts;
 };
