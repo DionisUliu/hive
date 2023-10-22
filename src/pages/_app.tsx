@@ -6,18 +6,11 @@ import { SessionProvider } from 'next-auth/react';
 import { Provider as RWBProvider } from 'react-wrap-balancer';
 import cx from 'classnames';
 import { Inter } from 'next/font/google';
-import { Metadata } from 'next';
-import { BsFillCloudDownloadFill } from 'react-icons/bs';
 
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
 });
-
-export const metadata: Metadata = {
-  title: 'Hackathon',
-  icons: BsFillCloudDownloadFill,
-};
 
 export default function MyApp({
   Component,
