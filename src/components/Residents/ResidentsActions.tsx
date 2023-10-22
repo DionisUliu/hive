@@ -51,8 +51,9 @@ const ResidentsActions = ({
           phoneNumber: data?.phoneNumber,
         };
         await createResident(body);
-        refetch();
-        notification.success({ message: 'Sentence created successfully' });
+        // refetch();
+        location.reload();
+        notification.success({ message: 'Resident created successfully' });
       } catch (error: any) {
         notification.error({ message: 'Unsuccessful, try again!' });
       } finally {
@@ -81,7 +82,9 @@ const ResidentsActions = ({
         setResidents(residents);
 
         // refetch();
-        notification.success({ message: 'Sentence updated successfully' });
+        location.reload();
+
+        notification.success({ message: 'Resident updated successfully' });
       } catch (error: any) {
         notification.error({ message: 'Unsuccessful, try again!' });
       } finally {

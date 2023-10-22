@@ -102,7 +102,8 @@ const ContractDrawer = ({
       await Promise.all(promises);
       setOpenDrawer(false);
       notification.success({ message: 'Contract created successfully' });
-      refetch();
+      // refetch();
+      location.reload();
     } catch (error: any) {
       notification.error({ message: 'Unsuccessful, try again!' });
     } finally {
