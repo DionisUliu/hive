@@ -1,25 +1,17 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import colors from '@/constants/colors';
-import {
-  ConfigProvider,
-  Drawer,
-  Spin,
-} from 'antd';
+import { ConfigProvider, Drawer, Spin } from 'antd';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import RoomsFilter from '@/components/RoomsFilter';
 import endpoints from '@/constants/endpoints';
 import useGetApi from '@/lib/hooks/useGetApi';
 import RoomCard from '@/components/RoomCard';
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ContractDrawer from '@/components/Contract/ContractDrawer';
-
 import styles from '../../styles/roomsList.module.css';
+import ContractDrawerInfo from '@/components/Contract/ContractDrawerInfo';
 
 const RoomsList = () => {
   const session = useSession();
@@ -40,6 +32,7 @@ const RoomsList = () => {
   const [residentLimit, setResidentLimit] = useState<number>();
 
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [openDrawerInfo, setOpenDrawerInfo] = useState<boolean>(false);
 
   useEffect(() => {
     if (!rooms && roomsPerBuilding.length > 0) {
@@ -95,23 +88,37 @@ const RoomsList = () => {
                     imageUrl={room.preview}
                     roomName={room.name}
                     setOpenDrawer={setOpenDrawer}
+                    setOpenDrawerInfo={setOpenDrawerInfo}
                   />
                 ))}
               </div>
               <Drawer
-                title={`Room nr. ${roomName}`}
+                title={`Room nr. ${roomName} | Capacity (${residentLimit})`}
                 placement="right"
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}
                 size="default"
                 destroyOnClose
               >
-                <ContractDrawer 
-                  roomId={roomId} 
+                <ContractDrawer
+                  roomId={roomId}
                   residentLimit={residentLimit}
                   refetch={refetch}
                   setOpenDrawer={setOpenDrawer}
-               />
+                />
+              </Drawer>
+              <Drawer
+                title={`Room nr. ${roomName} | Capacity (${residentLimit})`}
+                placement="right"
+                onClose={() => setOpenDrawerInfo(false)}
+                open={openDrawerInfo}
+                size="default"
+                destroyOnClose
+              >
+                <ContractDrawerInfo
+                  roomId={roomId}
+                  allRooms={roomsPerBuilding}
+                />
               </Drawer>
             </div>
           )}
