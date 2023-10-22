@@ -1,4 +1,5 @@
 import { Prisma, Resident } from '@prisma/client';
+
 import prisma from '../../../config/prisma';
 
 export const createResident = async (
@@ -38,14 +39,9 @@ export const getResident = async (query: Prisma.ResidentWhereInput) => {
 };
 
 export const getResidentById = async (id: string) => {
-  const resident = await prisma.resident.findFirst({
+    const resident = await prisma.resident.findUnique({
     where: {
       id,
-      deletedAt: {
-        not: {
-          equals: null,
-        },
-      },
     },
     include: { contract: true, history: true },
   });

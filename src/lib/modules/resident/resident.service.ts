@@ -3,8 +3,12 @@ import {
   ICreateResidentBody,
   IUpdateResidentBody,
 } from '@/lib/utilities/types';
-import { NotFound, UnprocessableEntity } from '@/lib/utilities/error';
+import {
+  NotFound,
+  UnprocessableEntity,
+} from '@/lib/utilities/error';
 import errors from '@/config/errors';
+
 import * as dal from './resident.dal';
 
 export const createResident = async (data: ICreateResidentBody) => {
@@ -30,6 +34,7 @@ export const getResident = async (id: string) => {
 
 export const updateResident = async (id: string, data: IUpdateResidentBody) => {
   const resident = await dal.getResidentById(id);
+  
   if (!resident) {
     throw new NotFound(errors.RESIDENT.NOT_FOUND);
   }
