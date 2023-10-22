@@ -63,7 +63,7 @@ model Contract {
   amount     Float
   startDate  String    @map("start_date")
   endDate    String    @map("end_date")
-  isPaid     Boolean   @map("is_paid")
+  isPaid     Boolean   @default(true) @map("is_paid")
   residentId String    @unique @map("resident_id")
   resident   Resident  @relation(fields: [residentId], references: [id])
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
@@ -81,9 +81,9 @@ model Register {
   active     Boolean  @default(true)
   residentId String
   roomId     String
+  contractId String   @unique @map("contract_id")
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
-  contractId String   @unique @map("contract_id")
   contract   Contract @relation(fields: [contractId], references: [id])
   Room       Room     @relation(fields: [roomId], references: [id])
   Resident   Resident @relation(fields: [residentId], references: [id])
@@ -104,5 +104,3 @@ enum RoomType {
   TWO_BEDROOM_APARTMENT
   BIG_STUDIO_APARTMENT
 }
-
-//false contract is deleted

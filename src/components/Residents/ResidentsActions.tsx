@@ -8,7 +8,12 @@ import colors from '@/constants/colors';
 import { createResident, updateResident } from '@/lib/api/residents';
 import { AiFillEdit, AiOutlinePlusCircle } from 'react-icons/ai';
 
-const ResidentsActions = ({ record, refetch }: any) => {
+const ResidentsActions = ({
+  record,
+  refetch,
+  residentData,
+  setResidents,
+}: any) => {
   const residentId = record?.id;
 
   const {
@@ -35,7 +40,6 @@ const ResidentsActions = ({ record, refetch }: any) => {
   };
 
   const onSubmit = async (data: any) => {
-    toggleModal();
     setLoading(true);
     if (!residentId) {
       try {
@@ -53,6 +57,7 @@ const ResidentsActions = ({ record, refetch }: any) => {
         notification.error({ message: 'Unsuccessful, try again!' });
       } finally {
         setLoading(false);
+        toggleModal();
       }
     } else {
       try {
@@ -63,13 +68,25 @@ const ResidentsActions = ({ record, refetch }: any) => {
           gender: data?.gender,
           phoneNumber: data?.phoneNumber,
         };
-        await updateResident(body, residentId);
-        refetch();
+
+        const resident = await updateResident(body, residentId);
+
+        const residents = residentData.map((rsd: any) => {
+          if (rsd.id === resident.id) {
+            return resident;
+          }
+          return rsd;
+        });
+
+        setResidents(residents);
+
+        // refetch();
         notification.success({ message: 'Sentence updated successfully' });
       } catch (error: any) {
         notification.error({ message: 'Unsuccessful, try again!' });
       } finally {
         setLoading(false);
+        toggleModal();
       }
     }
   };
