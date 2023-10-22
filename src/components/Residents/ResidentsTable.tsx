@@ -1,11 +1,21 @@
-import { Table, Tooltip, Button, Popconfirm, notification, Tag } from 'antd';
+import {
+  notification,
+  Button,
+  Popconfirm,
+  Table,
+  Tag,
+  Tooltip,
+} from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { ISentenceData, ISentenceDataUpdate } from '@/lib/utilities/types';
-import ResidentsActions from './ResidentsActions';
-import { deleteResident, updateResident } from '@/lib/api/residents';
+import {
+  deleteResident,
+  updateResident,
+} from '@/lib/api/residents';
 import { GiThreeFriends } from 'react-icons/gi';
+
+import ResidentsActions from './ResidentsActions';
 
 const ResidentsTable = ({ refetch, residentData }: any) => {
   const [loading, setLoading] = useState(false);
@@ -23,16 +33,14 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
     }
   };
 
-  const onRoommateUpdate = async (record: string) => {
-    setLoading(true);
-
-    console.log('record', record);
+  const onRoommateUpdate = async (residentId: string, isOpenForRoommates: boolean) => {
+    setLoading(true);    
 
     try {
       const body: any = {
-        openForRoomMates: true,
+        openForRoomMates: isOpenForRoommates,
       };
-      await updateResident(body, record);
+      await updateResident(body, residentId);
       refetch();
       notification.success({ message: 'Roommate statis updated successfully' });
     } catch (error: any) {
@@ -70,7 +78,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      onFilter: (value: string | number, record: ISentenceData) =>
+      onFilter: (value: string | number, record: any) =>
         record.toString() === value.toString(),
       sorter: (a: any, b: any) => a.email.localeCompare(b.email),
     },
@@ -78,14 +86,14 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
-      onFilter: (value: string | number, record: ISentenceData) =>
+      onFilter: (value: string | number, record: any) =>
         record.toString() === value.toString(),
     },
     {
       title: 'Phone number',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      onFilter: (value: string | number, record: ISentenceData) =>
+      onFilter: (value: string | number, record: any) =>
         record.toString() === value.toString(),
     },
     {
@@ -123,7 +131,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
     {
       title: 'Actions',
       key: 'actions',
-      render: (record: ISentenceDataUpdate) => (
+      render: (record: any) => (
         <span style={{ display: 'flex', gap: 10 }}>
           <ResidentsActions record={record} refetch={refetch} />
           <Popconfirm
@@ -140,7 +148,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
           </Popconfirm>
           <Popconfirm
             title="Are you sure you want to update roommate status?"
-            onConfirm={() => onRoommateUpdate(record?.id)}
+            onConfirm={() => onRoommateUpdate(record?.id, !record?.openForRoomMates)}
             okText="Yes"
             cancelText="No"
           >

@@ -3,12 +3,12 @@ import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import { useSession } from 'next-auth/react';
 import { ConfigProvider, Spin } from 'antd';
 import colors from '@/constants/colors';
-
-import styles from '../../styles/buildings.module.css';
 import ResidentsTable from '@/components/Residents/ResidentsTable';
 import endpoints from '@/constants/endpoints';
 import useGetApi from '@/lib/hooks/useGetApi';
 import ResidentsActions from '@/components/Residents/ResidentsActions';
+
+import styles from '../../styles/buildings.module.css';
 
 const Residents = () => {
   const session = useSession();
@@ -18,8 +18,6 @@ const Residents = () => {
     loading,
     refetch,
   } = useGetApi<any[]>(`${endpoints.RESIDENTS}`);
-
-  console.log('residentData', residentData);
 
   return (
     <ProtectedRoute>
