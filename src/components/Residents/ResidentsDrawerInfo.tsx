@@ -1,6 +1,11 @@
-import { Descriptions, DescriptionsProps, Tag } from 'antd';
+import {
+  Descriptions,
+  DescriptionsProps,
+  Image,
+  Spin,
+  Tag,
+} from 'antd';
 import moment from 'moment';
-import { Image } from 'antd';
 import endpoints from '@/constants/endpoints';
 import useGetApi from '@/lib/hooks/useGetApi';
 import roomTypes, { RoomTypeMapping } from '@/constants/roomTypes';
@@ -10,7 +15,7 @@ const ResidentsDrawerInfo = ({ residentId, residentData }: any) => {
     (resident: any) => resident?.id === residentId,
   );
 
-  const { data: roomData } = useGetApi<any>(
+  const { data: roomData, loading } = useGetApi<any>(
     `${endpoints.ROOM}${residentContractInfo?.contract?.roomId}`,
   );
 
@@ -58,15 +63,32 @@ const ResidentsDrawerInfo = ({ residentId, residentData }: any) => {
 
   return (
     <div>
-      <Image style={{ borderRadius: 10 }} width={330} src={roomData?.preview} />
-      <Descriptions
-        style={{ marginTop: 20 }}
-        bordered
-        layout="vertical"
-        size="small"
-        column={{ xs: 1, sm: 2, md: 1, lg: 1, xl: 1, xxl: 1 }}
-        items={items}
-      />
+      {
+        loading ? (
+          <span
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '40vh',
+            }}
+          >
+            <Spin size="large" />
+          </span>
+        ):(
+          <>
+          <Image style={{ borderRadius: 10 }} width={330} src={roomData?.preview} />
+          <Descriptions
+            style={{ marginTop: 20 }}
+            bordered
+            layout="vertical"
+            size="small"
+            column={{ xs: 1, sm: 2, md: 1, lg: 1, xl: 1, xxl: 1 }}
+            items={items}
+            />
+        </>
+        )
+      }
     </div>
   );
 };

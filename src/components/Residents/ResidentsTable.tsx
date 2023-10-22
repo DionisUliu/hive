@@ -1,20 +1,23 @@
 import {
   notification,
   Button,
+  Drawer,
   Popconfirm,
   Table,
   Tag,
   Tooltip,
-  Drawer,
 } from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { deleteResident, updateResident } from '@/lib/api/residents';
+import {
+  deleteResident,
+  updateResident,
+} from '@/lib/api/residents';
 import { GiThreeFriends } from 'react-icons/gi';
+import { LiaFileContractSolid } from 'react-icons/lia';
 
 import ResidentsActions from './ResidentsActions';
-import { LiaFileContractSolid } from 'react-icons/lia';
 import ResidentsDrawerInfo from './ResidentsDrawerInfo';
 
 const ResidentsTable = ({ refetch, residentData }: any) => {
@@ -168,6 +171,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
             icon={<LiaFileContractSolid style={{ marginBottom: -2 }} />}
             size="small"
             type="primary"
+            disabled={!record?.contract}
             onClick={() => {
               setOpenDrawer(true);
               setResidentId(record?.id);
