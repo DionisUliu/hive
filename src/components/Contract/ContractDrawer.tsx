@@ -9,12 +9,11 @@ import {
   InputNumber,
   Row,
   Select,
+  Descriptions,
+  DescriptionsProps,
 } from 'antd';
 import { useState } from 'react';
-import {
-  useForm,
-  Controller,
-} from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createContractSchema } from '@/constants/validationSchema';
 import colors from '@/constants/colors';
@@ -28,7 +27,12 @@ import styles from '../../styles/form.module.css';
 
 const { RangePicker } = DatePicker;
 
-const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) => {
+const ContractDrawer = ({
+  refetch,
+  roomId,
+  residentLimit,
+  setOpenDrawer,
+}: any) => {
   const {
     handleSubmit,
     control,
@@ -46,12 +50,30 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
   const [range, setRange] = useState<any>(null);
   const [residentLimitError, setResidentLimitError] = useState<boolean>(false);
 
-  const startDatePicker = dayjs(range ? range[0] : null).format('YYYY-MM-DD HH:mm:ss');
-  const endDatePicker = dayjs(range ? range[1] : null).format('YYYY-MM-DD HH:mm:ss');
+  const startDatePicker = dayjs(range ? range[0] : null).format(
+    'YYYY-MM-DD HH:mm:ss',
+  );
+  const endDatePicker = dayjs(range ? range[1] : null).format(
+    'YYYY-MM-DD HH:mm:ss',
+  );
 
-  console.log('startDatePicker', startDatePicker);
-  console.log('endDatePicker', endDatePicker);
-  
+  const items: DescriptionsProps['items'] = [
+    {
+      label: 'Facilities',
+      children: (
+        <>
+          • WIFI
+          <br />
+          • Cabinet
+          <br />
+          • Study table
+          <br />
+          • Kitchen
+          <br />• Toilet
+        </>
+      ),
+    },
+  ];
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -132,8 +154,8 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
                     value={range}
                     onChange={(value) => {
                       console.log(value);
-                      
-                      setRange(value)
+
+                      setRange(value);
                     }}
                   />
                 </>
@@ -186,9 +208,14 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
           />
         )}
       </Form>
-      <Divider style={{ marginTop: 40 }} plain>
-        Created contracts
-      </Divider>
+      <Divider style={{ marginTop: 40 }}>Room info</Divider>
+      <Descriptions
+        bordered
+        layout="vertical"
+        size="small"
+        column={{ xs: 1, sm: 2, md: 3, lg: 2, xl: 2, xxl: 2 }}
+        items={items}
+      />
     </div>
   );
 };

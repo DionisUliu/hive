@@ -1,10 +1,4 @@
-import {
-  notification,
-  Button,
-  Popconfirm,
-  Table,
-  Tooltip,
-} from 'antd';
+import { notification, Button, Popconfirm, Table, Tooltip } from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -52,37 +46,37 @@ const ContractTable = ({ refetch, contractData }: any) => {
       title: 'Contract title',
       dataIndex: 'name',
       key: 'name',
-      sorter: (a: any, b: any) => a.firstName.localeCompare(b.name),
+      sorter: (a: any, b: any) => a?.name?.localeCompare(b?.name),
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
-      sorter: (a: any, b: any) => a.lastName.localeCompare(b.amount),
+      sorter: (a: any, b: any) => a?.amount - b?.amount,
     },
     {
       title: 'Resident',
       dataIndex: 'resident',
       key: 'resident',
-      render: (resident: any) => `${resident.firstName} ${resident.lastName}`
+      render: (resident: any) => `${resident?.firstName} ${resident?.lastName}`,
     },
     {
       title: 'Start date',
       dataIndex: 'startDate',
       key: 'startDate',
-      render: (startDate: string) => (moment(startDate).format('DD.MM.YYYY'))
+      render: (startDate: string) => moment(startDate).format('DD.MM.YYYY'),
     },
     {
       title: 'End date',
       dataIndex: 'endDate',
       key: 'endDate',
-      render: (endDate: string) => (moment(endDate).format('DD.MM.YYYY'))
+      render: (endDate: string) => moment(endDate).format('DD.MM.YYYY'),
     },
     {
       title: 'Phone number',
       dataIndex: 'resident',
       key: 'resident',
-      render: (resident: any) => resident.phoneNumber
+      render: (resident: any) => resident.phoneNumber,
     },
     // {
     //   title: 'Status',
@@ -101,9 +95,9 @@ const ContractTable = ({ refetch, contractData }: any) => {
       key: 'actions',
       render: (record: ISentenceDataUpdate) => (
         <span style={{ display: 'flex', gap: 10 }}>
-          <ContractModal 
-            record={record} 
-            refetch={refetch} 
+          <ContractModal
+            record={record}
+            refetch={refetch}
             residentData={residentData}
             residentLoading={residentLoading}
           />

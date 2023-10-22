@@ -5,20 +5,22 @@ import {
   Table,
   Tag,
   Tooltip,
+  Drawer,
 } from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import {
-  deleteResident,
-  updateResident,
-} from '@/lib/api/residents';
+import { deleteResident, updateResident } from '@/lib/api/residents';
 import { GiThreeFriends } from 'react-icons/gi';
 
 import ResidentsActions from './ResidentsActions';
+import { LiaFileContractSolid } from 'react-icons/lia';
+import ResidentsDrawerInfo from './ResidentsDrawerInfo';
 
 const ResidentsTable = ({ refetch, residentData }: any) => {
   const [loading, setLoading] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [residentId, setResidentId] = useState<string>();
 
   const onDelete = async (record: string) => {
     setLoading(true);
@@ -33,8 +35,11 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
     }
   };
 
-  const onRoommateUpdate = async (residentId: string, isOpenForRoommates: boolean) => {
-    setLoading(true);    
+  const onRoommateUpdate = async (
+    residentId: string,
+    isOpenForRoommates: boolean,
+  ) => {
+    setLoading(true);
 
     try {
       const body: any = {
@@ -66,13 +71,13 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       title: 'First name',
       dataIndex: 'firstName',
       key: 'firstName',
-      sorter: (a: any, b: any) => a.firstName.localeCompare(b.firstName),
+      sorter: (a: any, b: any) => a?.firstName?.localeCompare(b?.firstName),
     },
     {
       title: 'Last name',
       dataIndex: 'lastName',
       key: 'lastName',
-      sorter: (a: any, b: any) => a.lastName.localeCompare(b.lastName),
+      sorter: (a: any, b: any) => a?.lastName?.localeCompare(b?.lastName),
     },
     {
       title: 'Email',
@@ -80,7 +85,7 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
       key: 'email',
       onFilter: (value: string | number, record: any) =>
         record.toString() === value.toString(),
-      sorter: (a: any, b: any) => a.email.localeCompare(b.email),
+      sorter: (a: any, b: any) => a?.email?.localeCompare(b?.email),
     },
     {
       title: 'Gender',
@@ -148,7 +153,9 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
           </Popconfirm>
           <Popconfirm
             title="Are you sure you want to update roommate status?"
-            onConfirm={() => onRoommateUpdate(record?.id, !record?.openForRoomMates)}
+            onConfirm={() =>
+              onRoommateUpdate(record?.id, !record?.openForRoomMates)
+            }
             okText="Yes"
             cancelText="No"
           >
@@ -157,6 +164,17 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
               size="small"
             />
           </Popconfirm>
+          <Button
+            icon={<LiaFileContractSolid style={{ marginBottom: -2 }} />}
+            size="small"
+            type="primary"
+            onClick={() => {
+              setOpenDrawer(true);
+              setResidentId(record?.id);
+            }}
+          >
+            {'View contract'}
+          </Button>
         </span>
       ),
     },
@@ -171,6 +189,19 @@ const ResidentsTable = ({ refetch, residentData }: any) => {
         dataSource={residentData}
         scroll={{ x: true }}
       />
+      <Drawer
+        title={'Contract information'}
+        placement="right"
+        onClose={() => setOpenDrawer(false)}
+        open={openDrawer}
+        size="default"
+        destroyOnClose
+      >
+        <ResidentsDrawerInfo
+          residentId={residentId}
+          residentData={residentData}
+        />
+      </Drawer>
     </div>
   );
 };

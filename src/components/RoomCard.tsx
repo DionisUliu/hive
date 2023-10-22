@@ -17,6 +17,7 @@ interface Props {
   setRoomName: React.Dispatch<SetStateAction<string | undefined>>;
   setResidentLimit: React.Dispatch<SetStateAction<number | undefined>>;
   setOpenDrawer: React.Dispatch<SetStateAction<boolean>>;
+  setOpenDrawerInfo: React.Dispatch<SetStateAction<boolean>>;
   roomId: string;
 }
 
@@ -30,6 +31,7 @@ const RoomCard: React.FC<Props> = ({
   setRoomName,
   setResidentLimit,
   setOpenDrawer,
+  setOpenDrawerInfo,
   roomId,
 }) => {
   return (
@@ -64,6 +66,11 @@ const RoomCard: React.FC<Props> = ({
         onClick={() => {
           if (!isReserved) {
             setOpenDrawer(true);
+            setRoomId(roomId);
+            setResidentLimit(residentNumber);
+            setRoomName(roomName);
+          } else {
+            setOpenDrawerInfo(true);
             setRoomId(roomId);
             setResidentLimit(residentNumber);
             setRoomName(roomName);
