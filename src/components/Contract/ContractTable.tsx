@@ -3,7 +3,6 @@ import {
   Button,
   Popconfirm,
   Table,
-  Tag,
   Tooltip,
 } from 'antd';
 import { AiFillDelete } from 'react-icons/ai';
@@ -12,11 +11,17 @@ import { useState } from 'react';
 import { ISentenceDataUpdate } from '@/lib/utilities/types';
 import moment from 'moment';
 import { deleteContract } from '@/lib/api/contract';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
 
 import ContractModal from './ContractModal';
 
 const ContractTable = ({ refetch, contractData }: any) => {
   const [loading, setLoading] = useState(false);
+
+  const { data: residentData, loading: residentLoading } = useGetApi<any[]>(
+    `${endpoints.RESIDENTS}`,
+  );
 
   const onDelete = async (record: string) => {
     setLoading(true);
@@ -79,24 +84,29 @@ const ContractTable = ({ refetch, contractData }: any) => {
       key: 'resident',
       render: (resident: any) => resident.phoneNumber
     },
-    {
-      title: 'Status',
-      dataIndex: 'isPaid',
-      key: 'isPaid',
-      render: (contract: any) => {
-        return (
-          <Tag color={contract ? 'green' : 'red'}>
-            {contract ? 'isPaid' : 'notPaid'}
-          </Tag>
-        );
-      },
-    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'isPaid',
+    //   key: 'isPaid',
+    //   render: (contract: any) => {
+    //     return (
+    //       <Tag color={contract ? 'green' : 'red'}>
+    //         {contract ? 'isPaid' : 'notPaid'}
+    //       </Tag>
+    //     );
+    //   },
+    // },
     {
       title: 'Actions',
       key: 'actions',
       render: (record: ISentenceDataUpdate) => (
         <span style={{ display: 'flex', gap: 10 }}>
-          <ContractModal record={record} refetch={refetch} />
+          <ContractModal 
+            record={record} 
+            refetch={refetch} 
+            residentData={residentData}
+            residentLoading={residentLoading}
+          />
           <Popconfirm
             title="Are you sure you want to delete this resident?"
             onConfirm={() => onDelete(record?.id)}

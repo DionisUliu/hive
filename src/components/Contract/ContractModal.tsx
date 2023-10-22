@@ -25,12 +25,8 @@ import { updateContract } from '@/lib/api/contract';
 
 import styles from '../../styles/form.module.css';
 
-const ContractModal = ({ record, refetch }: any) => {
+const ContractModal = ({ record, refetch, residentLoading, residentData }: any) => {
   const contractId = record?.id;
-
-  const { data: residentData, loading: residentLoading } = useGetApi<any[]>(
-    `${endpoints.RESIDENTS}`,
-  );
 
   const {
     handleSubmit,

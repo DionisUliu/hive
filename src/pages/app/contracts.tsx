@@ -18,6 +18,7 @@ const Contracts = () => {
     refetch,
   } = useGetApi<any[]>(`${endpoints.CONTRACTS}`);
 
+
   return (
     <ProtectedRoute>
       <PageHeader session={session}>
@@ -43,7 +44,7 @@ const Contracts = () => {
             </span>
           ) : (
             <>
-              <h1 className={styles.title}>Contracts</h1>
+              <h1 style={{marginBottom: '20px'}}>Contracts</h1>
               <ContractTable refetch={refetch} contractData={contractData} />
             </>
           )}
