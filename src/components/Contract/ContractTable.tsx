@@ -10,8 +10,8 @@ import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { ISentenceDataUpdate } from '@/lib/utilities/types';
-import { deleteResident } from '@/lib/api/residents';
 import moment from 'moment';
+import { deleteContract } from '@/lib/api/contract';
 
 import ContractModal from './ContractModal';
 
@@ -21,7 +21,7 @@ const ContractTable = ({ refetch, contractData }: any) => {
   const onDelete = async (record: string) => {
     setLoading(true);
     try {
-      await deleteResident(record);
+      await deleteContract(record);
       refetch();
       notification.success({ message: 'Resident deleted successfully' });
     } catch (error: any) {

@@ -16,6 +16,9 @@ export const getContracts = async (query?: Prisma.ContractWhereInput) => {
   const contracts = await prisma.contract.findMany({
     where: {
       ...query,
+      deletedAt: {
+          equals: null,
+      },
     },
     include: { resident: true, Room: true },
     orderBy: { createdAt: 'desc' },
@@ -43,9 +46,7 @@ export const getContractById = async (id: string) => {
     where: {
       id,
       deletedAt: {
-        not: {
           equals: null,
-        },
       },
     },
     include: { resident: true, Room: true },

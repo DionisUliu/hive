@@ -21,9 +21,9 @@ export async function createContract(body: any) {
   }
 }
 
-export async function updateContract(body: any, residentId: string) {
+export async function updateContract(body: any, contractId: string) {
   try {
-    const response = await fetch(`${endpoints.CONTRACTS}/${residentId}`, {
+    const response = await fetch(`${endpoints.CONTRACTS}/${contractId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

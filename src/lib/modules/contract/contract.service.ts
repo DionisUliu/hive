@@ -38,8 +38,6 @@ export const createContract = async (data: ICreateContractBody) => {
 };
 
 export const updateContract = async (id: string, data: IUpdateContractBody) => {
-  //validate body
-
   const contract = await dal.getContractById(id);
   if (!contract) throw new NotFound(errors.CONTRACT.NOT_FOUND);
 
@@ -53,7 +51,9 @@ export const updateContract = async (id: string, data: IUpdateContractBody) => {
     if (!resident) throw new NotFound(errors.RESIDENT.NOT_FOUND);
   }
 
-  await dal.updateContractById(id, data);
+  const updatedContract = await dal.updateContractById(id, data);
+
+  return updatedContract;
 };
 
 export const getContract = async (id: string) => {
@@ -70,6 +70,8 @@ export const getContract = async (id: string) => {
 
 export const deleteContract = async (id: string) => {
   const foundContract = await dal.getContractById(id);
+  console.log(foundContract);
+  
   if (!foundContract) throw new NotFound(errors.CONTRACT.NOT_FOUND);
 
   const deletedAt = new Date();

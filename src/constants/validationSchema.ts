@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+
 const allowedEmailDomains = [
   'gmail.com',
   'hotmail.com',
@@ -71,6 +72,14 @@ export const createContractSchema = yup.object().shape({
   amount: yup.number().required('Amount is required!'),
   dateRange: yup.array().of(yup.date()),
   residentId: yup.array().required('Resident id is required!'),
+  roomId: yup.string(),
+});
+
+export const updateContractSchema = yup.object().shape({
+  name: yup.string().required('Name is required!'),
+  amount: yup.number().required('Amount is required!'),
+  startDate: yup.string().required(),
+  endDate: yup.string().required(),
   roomId: yup.string(),
 });
 

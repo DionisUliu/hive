@@ -1,24 +1,36 @@
-import styles from '../../styles/form.module.css';
 import {
+  notification,
   Button,
   DatePicker,
   Form,
   Input,
   InputNumber,
   Modal,
+  Row,
   Select,
-  notification,
 } from 'antd';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createContractSchema } from '@/constants/validationSchema';
 import colors from '@/constants/colors';
-import { createResident, updateResident } from '@/lib/api/residents';
-import { AiFillEdit, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillEdit } from 'react-icons/ai';
+import { updateContractSchema } from '@/constants/validationSchema';
+import dayjs from 'dayjs';
+import endpoints from '@/constants/endpoints';
+import useGetApi from '@/lib/hooks/useGetApi';
+import { updateContract } from '@/lib/api/contract';
+
+import styles from '../../styles/form.module.css';
 
 const ContractModal = ({ record, refetch }: any) => {
-  const residentId = record?.id;
+  const contractId = record?.id;
+
+  const { data: residentData, loading: residentLoading } = useGetApi<any[]>(
+    `${endpoints.RESIDENTS}`,
+  );
 
   const {
     handleSubmit,
@@ -26,19 +38,20 @@ const ContractModal = ({ record, refetch }: any) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(createContractSchema),
+    resolver: yupResolver(updateContractSchema),
     values: {
       name: record?.name || '',
       amount: record?.amount || '',
       startDate: record?.startDate || '',
       endDate: record?.endDate || '',
-      residentId: record?.residentId || '',
       roomId: record?.roomId || '',
     },
   });
 
   const [loading, setLoading] = useState(false);
   const [modalOpen, setToggleModal] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
 
   const toggleModal = () => {
     setToggleModal(!modalOpen);
@@ -47,17 +60,16 @@ const ContractModal = ({ record, refetch }: any) => {
   const onSubmit = async (data: any) => {
     toggleModal();
     setLoading(true);
-
+  
     try {
       const body: any = {
         name: data?.name,
         amount: data?.amount,
         startDate: data?.startDate,
         endDate: data?.endDate,
-        residentId: data?.residentId,
         roomId: data?.roomId,
       };
-      await updateResident(body, residentId);
+      await updateContract(body, contractId);
       refetch();
       notification.success({ message: 'Sentence updated successfully' });
     } catch (error: any) {
@@ -66,7 +78,7 @@ const ContractModal = ({ record, refetch }: any) => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div>
       <Button
@@ -76,7 +88,7 @@ const ContractModal = ({ record, refetch }: any) => {
         onClick={toggleModal}
       />
       <Modal
-        title={residentId ? 'Update resident' : 'Add resident'}
+        title={contractId ? 'Update resident' : 'Add resident'}
         width={500}
         centered={true}
         okButtonProps={{
@@ -90,11 +102,11 @@ const ContractModal = ({ record, refetch }: any) => {
         onCancel={toggleModal}
       >
         <Form style={{ borderColor: colors.SECONDARY }} layout="vertical">
+        <Row style={{ gap: 20 }}>
           <Form.Item
             label="Name"
             name="name"
             required
-            style={{ marginTop: 30 }}
           >
             <Controller
               name="name"
@@ -113,14 +125,19 @@ const ContractModal = ({ record, refetch }: any) => {
             label="Amount"
             name="amount"
             required
-            style={{ marginTop: 30 }}
           >
             <Controller
               name="amount"
               control={control}
-              render={({ field, fieldState: { error } }) => (
+              render={({ field:{ ref, onChange, name, value }, fieldState: { error } }) => (
                 <>
-                  <InputNumber min={1} max={10} {...field} />
+                  <InputNumber
+                      name={name}
+                      onChange={onChange}
+                      ref={ref}
+                     style={{width: '100%'}} 
+                     value={value}
+                    />
                   {errors.amount && (
                     <p className={styles.error}>{error?.message}</p>
                   )}
@@ -128,18 +145,22 @@ const ContractModal = ({ record, refetch }: any) => {
               )}
             />
           </Form.Item>
+        </Row>
+        <Row style={{ gap: 20 }}>
           <Form.Item
             label="StartDate"
             name="startDate"
             required
-            style={{ marginTop: 30 }}
           >
             <Controller
               name="startDate"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <>
-                  <DatePicker allowClear {...field} />
+                  <DatePicker
+                    onChange={(startDate: any) => setStartDate(startDate.toString())}
+                    value={dayjs(startDate)}
+                  />
                   {errors.startDate && (
                     <p className={styles.error}>{error?.message}</p>
                   )}
@@ -151,14 +172,16 @@ const ContractModal = ({ record, refetch }: any) => {
             label="EndDate"
             name="endDate"
             required
-            style={{ marginTop: 30 }}
           >
             <Controller
               name="endDate"
               control={control}
-              render={({ field, fieldState: { error } }) => (
+              render={({fieldState: { error } }) => (
                 <>
-                  <DatePicker allowClear {...field} />
+                  <DatePicker
+                    onChange={(endDate: any) => setEndDate(endDate.toString())}
+                    value={dayjs(endDate)}
+                  />
                   {errors.endDate && (
                     <p className={styles.error}>{error?.message}</p>
                   )}
@@ -166,27 +189,26 @@ const ContractModal = ({ record, refetch }: any) => {
               )}
             />
           </Form.Item>
+        </Row >
           <Form.Item
             label="Resident Id"
             name="residentId"
             required
-            style={{ marginTop: 30 }}
           >
-            <Controller
-              name="residentId"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <>
-                  <Select allowClear {...field}>
-                    <Select.Option value={'male'}>{'Male'}</Select.Option>
-                    <Select.Option value={'female'}>{'Female'}</Select.Option>
-                  </Select>
-                  {errors.residentId && (
-                    <p className={styles.error}>{error?.message}</p>
-                  )}
-                </>
-              )}
-            />
+          <Select
+            placeholder={'john doe'}
+            loading={residentLoading}
+            mode="multiple"
+            allowClear
+            disabled
+            maxTagCount={2}
+          >
+            {residentData?.map((item: any) => (
+              <Select.Option key={item.id} value={item?.id}>
+                {`${item?.firstName} ${item?.lastName}`}
+              </Select.Option>
+            ))}
+          </Select>
           </Form.Item>
         </Form>
       </Modal>
