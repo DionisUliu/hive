@@ -22,6 +22,7 @@ import moment from 'moment';
 import useGetApi from '@/lib/hooks/useGetApi';
 import endpoints from '@/constants/endpoints';
 import { createContract } from '@/lib/api/contract';
+import dayjs from 'dayjs';
 
 import styles from '../../styles/form.module.css';
 
@@ -45,11 +46,11 @@ const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) 
   const [range, setRange] = useState<any>(null);
   const [residentLimitError, setResidentLimitError] = useState<boolean>(false);
 
-  const startDatePicker = moment(range[0]).format('YYYY-MM-DD HH:mm:ss');
-  const endDatePicker = moment(range[1]).format('YYYY-MM-DD HH:mm:ss');
+  const startDatePicker = dayjs(range ? range[0] : null).format('YYYY-MM-DD HH:mm:ss');
+  const endDatePicker = dayjs(range ? range[1] : null).format('YYYY-MM-DD HH:mm:ss');
 
-  console.log('startDatePicker', startDatePicker, moment(range[0]));
-  console.log('endDatePicker', endDatePicker, range[1]);
+  console.log('startDatePicker', startDatePicker);
+  console.log('endDatePicker', endDatePicker);
   
 
   const onSubmit = async (data: any) => {
