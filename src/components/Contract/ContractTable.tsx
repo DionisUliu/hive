@@ -21,7 +21,8 @@ const ContractTable = ({ refetch, contractData }: any) => {
     setLoading(true);
     try {
       await deleteContract(record);
-      refetch();
+      // refetch();
+      location.reload();
       notification.success({ message: 'Resident deleted successfully' });
     } catch (error: any) {
       notification.error({ message: 'Can not delete resident, try again!' });

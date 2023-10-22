@@ -10,10 +10,7 @@ import {
 import { AiFillDelete } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import {
-  deleteResident,
-  updateResident,
-} from '@/lib/api/residents';
+import { deleteResident, updateResident } from '@/lib/api/residents';
 import { GiThreeFriends } from 'react-icons/gi';
 import { LiaFileContractSolid } from 'react-icons/lia';
 
@@ -29,7 +26,8 @@ const ResidentsTable = ({ refetch, residentData, setResidents }: any) => {
     setLoading(true);
     try {
       await deleteResident(record);
-      refetch();
+      // refetch();
+      location.reload();
       notification.success({ message: 'Resident deleted successfully' });
     } catch (error: any) {
       notification.error({ message: 'Can not delete resident, try again!' });
@@ -59,7 +57,7 @@ const ResidentsTable = ({ refetch, residentData, setResidents }: any) => {
       });
 
       setResidents(residents);
-
+      location.reload();
       // refetch();
       notification.success({ message: 'Roommate statis updated successfully' });
     } catch (error: any) {
