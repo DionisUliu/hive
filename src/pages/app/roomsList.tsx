@@ -1,23 +1,31 @@
 import PageHeader from '@/components/PageHeader';
 import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute';
 import colors from '@/constants/colors';
-import { ConfigProvider, Drawer, Spin } from 'antd';
+import {
+  ConfigProvider,
+  Drawer,
+  Spin,
+} from 'antd';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import RoomsFilter from '@/components/RoomsFilter';
 import endpoints from '@/constants/endpoints';
 import useGetApi from '@/lib/hooks/useGetApi';
 import RoomCard from '@/components/RoomCard';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import ContractDrawer from '@/components/Contract/ContractDrawer';
 
 import styles from '../../styles/roomsList.module.css';
-import ContractDrawer from '@/components/Contract/ContractDrawer';
 
 const RoomsList = () => {
   const session = useSession();
   const router = useRouter();
 
-  const { data, loading } = useGetApi<any[]>(endpoints.ROOMS);
+  const { data, loading, refetch } = useGetApi<any[]>(endpoints.ROOMS);
 
   const { buildingName } = router.query;
 
@@ -32,8 +40,6 @@ const RoomsList = () => {
   const [residentLimit, setResidentLimit] = useState<number>();
 
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-
-  console.log(roomId);
 
   useEffect(() => {
     if (!rooms && roomsPerBuilding.length > 0) {
@@ -100,7 +106,12 @@ const RoomsList = () => {
                 size="default"
                 destroyOnClose
               >
-                <ContractDrawer roomId={roomId} residentLimit={residentLimit} />
+                <ContractDrawer 
+                  roomId={roomId} 
+                  residentLimit={residentLimit}
+                  refetch={refetch}
+                  setOpenDrawer={setOpenDrawer}
+               />
               </Drawer>
             </div>
           )}

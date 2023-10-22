@@ -6,9 +6,7 @@ import {
 } from '../utilities/types';
 
 export const fetchData = async (url: string) => {
-  try {
-    console.log(url);
-    
+  try {    
     const response = await fetch(url);
 
     if (!response.ok) {

@@ -1,5 +1,5 @@
-import styles from '../../styles/form.module.css';
 import {
+  notification,
   Alert,
   Button,
   DatePicker,
@@ -9,10 +9,12 @@ import {
   InputNumber,
   Row,
   Select,
-  notification,
 } from 'antd';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import {
+  useForm,
+  Controller,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createContractSchema } from '@/constants/validationSchema';
 import colors from '@/constants/colors';
@@ -21,9 +23,11 @@ import useGetApi from '@/lib/hooks/useGetApi';
 import endpoints from '@/constants/endpoints';
 import { createContract } from '@/lib/api/contract';
 
+import styles from '../../styles/form.module.css';
+
 const { RangePicker } = DatePicker;
 
-const ContractDrawer = ({ refetch, roomId, residentLimit }: any) => {
+const ContractDrawer = ({ refetch, roomId, residentLimit, setOpenDrawer }: any) => {
   const {
     handleSubmit,
     control,
@@ -69,15 +73,15 @@ const ContractDrawer = ({ refetch, roomId, residentLimit }: any) => {
         return createContract(body);
       });
       await Promise.all(promises);
+      setOpenDrawer(false);
       notification.success({ message: 'Contract created successfully' });
+      refetch();
     } catch (error: any) {
       notification.error({ message: 'Unsuccessful, try again!' });
     } finally {
       setLoading(false);
     }
   };
-
-  console.log(errors);
 
   return (
     <div>
